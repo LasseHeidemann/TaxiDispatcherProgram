@@ -1,5 +1,7 @@
 <?php
 
+
+
 $title = "Taxis";
 
 $content = '<h1>Taxis</h1>
@@ -7,42 +9,44 @@ $content = '<h1>Taxis</h1>
 <a href="CreateNewTaxi.php"> Add a new Taxi</a><br/> ';
 
 include  'Template.php';
-require  'DBConnect.php';
+include "DBConnect.php";
 
-Class TaxiPage extends Page
+function CreateOverviewTable()
 {
-    public function displayTaxi()
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT * 
-                                        FROM taxi");
-            $stmt->execute();
+    $result = "
+     <table class = 'overviewTable'
+     <tr>
+            <td></td>
+            <td></td>
+            <td><b>TaxiID</b></td>
+            <td><b>CarName</b></td>
+            <td><b>CarBrand</b></td>
+            <td><b>CarSeats</b></td>
+            <td><b>LicensePlate</b></td>
+      </tr>";
 
-            $taxiRow = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($stmt->rowCount() > 0) {
-                //Creating a new user with the name and email from the database
-                $taxi = new Taxi($taxiRow['taxiID'], $taxiRow['carName'], $taxiRow['carBrand'], $taxiRow['carSeats'], $taxiRow['licensePlate']);
-                return $taxi;
-            } else {
-                echo 'No Taxi was found';
+    $databaseFacade = new DBFacade();
+    $databaseFacade->displayTaxi();
+    $taxiArray = array();
 
-            }
+    while ($row = mysql_fetch_array($result)){
 
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
     }
-}
 
-foreach ($taxi as $taxi){
-    $taxiID = $taxi['taxiID'];
-    $carName = $taxi['carName'];
-    $carBrand = $taxi['carBrand'];
-    $carSeats = $taxi['carSeats'];
-    $licensePlate = $taxi['licensePlate'];
+    foreach ($taxiArray as $key => $value){
+        $result = $result .
+            "<tr>
+                        <td><a href '' >Update</a></td>
+                        <td><a href '' >Delete</a></td>
+                        <td>$value->TaxiID</td>
+                        <td>$value->CarName</td>
+                        <td>$value->CarBrand</td>
+                        <td>$value->CarSeats</td>
+                        <td>$value->LicensePlate</td>
+                        </tr>";
 
-$Taxipage = new TaxiPage();
+    }
+    $result = $result . "</table>";
+    return $result;
 
-    $Taxipage->content .="
-    ";
 }
