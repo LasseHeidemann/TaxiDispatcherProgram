@@ -21,21 +21,19 @@ class DBFacade
      * @param $user_email the users email
      * @param $user_name the users name
      */
-    public function register($user_username, $user_password, $user_email, $user_name){
-        try{
-            if(filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-                $new_password = password_hash($user_password, PASSWORD_BCRYPT);
-                $stmt = $this->db->prepare("INSERT INTO user(username, password, email, name, user_level) 
-                                            VALUES(:uusername, :upass, :uemail, :uname, 0)");
-                $stmt->bindParam(":uusername", $user_username);
-                $stmt->bindParam(":upass", $new_password);
-                $stmt->bindParam(":uemail", $user_email);
-                $stmt->bindParam(":uname", $user_name);
+    public function createTaxi($carName, $carBrand, $carSeats, $licensePlate)
+    {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO Taxi(CarName, CarBrand, CarSeats, LicensePlate) 
+                                            VALUES(CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate)");
 
-                $stmt->execute();
+            $stmt->bindParam(':carName', $carName);
+            $stmt->bindParam(':carBrand', $carBrand);
+            $stmt->bindParam(':carSeats', $carSeats);
+            $stmt->bindParam(':licensePlate', $licensePlate);
+            if($stmt->execute()){
                 return true;
             }else{
-                echo "Your email is not correct";
                 return false;
             }
         }catch(PDOException $e){
@@ -43,47 +41,18 @@ class DBFacade
         }
     }
 
-    /**
-     * @param $uname username from the user
-     * @param $uemail email from the user
-     * @param $upass password from the user
-     * @return bool either true/false if user could login or not
-     */
-    public function login($uname, $uemail, $upass){
-        try{
-            $stmt = $this->db->prepare("SELECT user_ID, password 
-                                        FROM user 
-                                        WHERE username=:uname
-                                        OR email=:uemail
-                                        LIMIT 1");
-            $stmt->execute(array(':uname'=>$uname, ':uemail'=>$uemail));
-            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($stmt->rowCount() > 0){
-                if(password_verify($upass, $userRow['password'])){
-                    $_SESSION['user_session'] = $userRow['user_ID'];
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                echo 'Error no user found';
-            }
-        }catch(PDOException $e){
-            echo $e->getMessage();
-        }
-    }
 
-    public function deleteUser($uemail){
+    public function deleteTaxi($taxiID){
         try{
-            $stmt = $this->db->prepare("DELETE FROM user 
-                                        WHERE email=:uemail
+            $stmt = $this->db->prepare("DELETE FROM taxi 
+                                        WHERE TaxiID=:taxiID
                                         LIMIT 1");
-            $stmt->execute(array(':uemail'=>$uemail));
-            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->execute(array(':taxiID'=>$taxiID));
+            $taxiRow = $stmt->fetch(PDO::FETCH_ASSOC);
             if($stmt->rowCount() > 0){
-                echo 'User deleted';
+                echo 'Taxi deleted';
             }else{
-                echo 'Error no user found';
+                echo 'Error no Taxi found';
             }
         }catch(PDOException $e){
             echo $e->getMessage();
@@ -95,51 +64,28 @@ class DBFacade
      * @param $name the name of the user
      * @param $email the email of the user
      */
-    public function editUser($name, $email, $userid){
+    public function editTaxi($carName, $carBrand, $carSeats, $licensePlate, $taxiID){
         try{
-            $stmt = $this->db->prepare("UPDATE user 
-                                        SET name=:uname, email=:uemail 
-                                        WHERE user_ID =:userid");
-            $stmt->bindParam(':uname', htmlspecialchars($name), PDO::PARAM_STR);
-            $stmt->bindParam(':uemail', htmlspecialchars($email), PDO::PARAM_STR);
-            $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
+            $stmt = $this->db->prepare("UPDATE taxi 
+                                        SET CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate
+                                        WHERE TaxiID =:taxiID");
+            $stmt->bindParam(':carName', htmlspecialchars($carName), PDO::PARAM_STR);
+            $stmt->bindParam(':carBrand', htmlspecialchars($carBrand), PDO::PARAM_STR);
+            $stmt->bindParam(':carSeats', $carSeats, PDO::PARAM_INT);
+            $stmt->bindParam(':licensePlate', htmlspecialchars($licensePlate), PDO::PARAM_STR);
+            $stmt->bindParam(':taxiID', $taxiID, PDO::PARAM_INT);
             $result = $stmt->execute();
 
             if($result){
-                echo 'User was updated';
+                echo 'Taxi was updated';
             }else{
-                echo 'There was an error while updating the user';
+                echo 'There was an error while updating the Taxi';
             }
         }catch(PDOException $e){
             echo $e->getMessage();
         }
     }
 
-    /**
-     * @param $userid the users userid
-     * @return User User object with the users information
-     */
-    public function displayUser($userid){
-        try{
-            $stmt = $this->db->prepare("SELECT name, email 
-                                        FROM user 
-                                        WHERE user_ID =:userid 
-                                        LIMIT 1");
-            $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
-            $stmt->execute();
-            $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($stmt->rowCount() > 0){
-                //Creating a new user with the name and email from the database
-                $user = new User($userRow['name'], $userRow['email']);
-                return $user;
-            }else{
-                echo 'No user was found';
 
-            }
-
-        }catch(PDOException $e){
-            echo $e->getMessage();
-        }
-    }
 
 }

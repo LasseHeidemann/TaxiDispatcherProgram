@@ -1,4 +1,5 @@
 
+
 <html>
     <head>
 
@@ -13,11 +14,12 @@
             <div id = "banner">
             </div>
 
+
             <nav id = "navigation">
                 <ul id = "nav">
                     <li><a href= "Index.php">Home</a></li>
-                    <li><a href= "Booking.php">Booking</a></li>
-                    <li><a href= "Taxi.php">Taxis</a></li>
+                    <li><a href= "BookingPage.php">Booking</a></li>
+                    <li><a href= "TaxiPage.php">Taxis</a></li>
                 </ul>
              </nav>
 
@@ -25,13 +27,11 @@
             <?php echo $content; ?>
             </div>
 
-            <div id = "sidebar"
-        </div>
-
-        <footer>
+            <footer>
             <p> All rights reserved </p>
-        </footer>
+            </footer>
 
     </body>
 
 </html>
+
