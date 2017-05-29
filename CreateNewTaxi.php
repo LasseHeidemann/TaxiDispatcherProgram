@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'post')
     $licensePlate = htmlspecialchars($_POST["txtLicensePlate"]);
 
     $taxi = new Taxi($carName, $carBrand, $carSeats, $licensePlate);
-    $databaseFacade = new DBFacade();
+        $databaseFacade = new DBFacade();
     echo $databaseFacade->createTaxi($taxi);
 
 }
