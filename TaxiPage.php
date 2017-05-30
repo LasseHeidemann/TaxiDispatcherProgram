@@ -20,22 +20,30 @@ $content ="
             <th></th>
             <th></th>
      </thead>
-     <tbody>";
+     <tbody>';
+
     $taxis = $dbFac->displayTaxi();
     foreach ($taxis as $taxi => $value){
         foreach ($value as $subvalue => $valueTwo){
 
             <tr>
-            <td> . $valueTwo ['id'] .</td>
-                        <td>".$valueTwo[TaxiID]."</td>
-                        <td>".$valueTwo[CarName]."</td>
-                        <td>".$valueTwo[Carbrand]."</td>
-                        <td>".$valueTwo[CarSeats]."</td>
-                        <td>".$valueTwo[LicensePlate]."</td>
+                    <td> . $valueTwo ['id'] .</td>
+                        <td>".$valueTwo[taxiID]."</td>
+                        <td>".$valueTwo[carName]."</td>
+                        <td>".$valueTwo[carbrand]."</td>
+                        <td>".$valueTwo[carSeats]."</td>
+                        <td>".$valueTwo[licensePlate]."</td>
                         <td><button type = 'submit' data-href = UpdateTaxi.php?id=".$valueTwo['id'].">Update</a></td>
                         <td><button type = 'submit' >Delete</input></td>
-                        </tr>;
+            </tr>;
     }
 }
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+
 ";
 include  'Template.php';
