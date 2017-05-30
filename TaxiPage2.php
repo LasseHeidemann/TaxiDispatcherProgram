@@ -5,13 +5,6 @@
  * Date: 30.05.2017
  * Time: 10:16
  */
-
-$title = "Taxis";
-
-$content = '<h1>Taxis</h1>
-
-<a href="CreateNewTaxi.php"> Add a new Taxi</a><br/> ';
-
 include "DBConnect.php";
 
 ?>
@@ -20,7 +13,7 @@ include "DBConnect.php";
 <html>
     <head>
 
-        <title> <?php echo $title; ?>  </title>
+        <title>  Taxis  </title>
 <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
@@ -33,29 +26,35 @@ include "DBConnect.php";
 
     <nav id = "navigation">
         <ul id = "nav">
-            <li><a href= "Index.php">Home</a></li>
-            <li><a href= "BookingPage.php">Booking</a></li>
-            <li><a href= "TaxiPage.php">Taxis</a></li>
+            <li><a href= "RequestPage.php">Requests</a></li>
+            <li><a href= "BookingsPage.php">Bookings</a></li>
+            <li><a href= "TaxiPage2.php">Taxis</a></li>
+            <li><a href= "SharedModePage.php">Shared Mode</a></li>
         </ul>
     </nav>
 
     <pos>
     <div id = "conecnt_area">
 
+        <br>
+
         <table class = 'overviewTable'
-        <table align="">
+        <table border=1 cellspacing=1 cellpadding=2 align="center">
         <thead></thead>
         <th><b>ID</b></th>
         <th><b>Name</b></th>
         <th><b>Brand</b></th>
         <th><b>Seats</b></th>
         <th><b>Licenseplate</b></th>
-        <th></th>
-        <th></th>
+
+
+
         </thead>
             <tbody>
 
         <?php
+
+
 
         $taxis = $dbFac->displayTaxi();
         foreach ($taxis as $taxi => $value){
@@ -67,6 +66,8 @@ include "DBConnect.php";
                 echo            '<td>'.$valueTwo["CarBrand"].'</td>';
                 echo            '<td>'.$valueTwo["CarSeats"].'</td>';
                 echo            '<td>'.$valueTwo["LicensePlate"].'</td>';
+                echo            '<td><input type = button a href="UpdateTaxi.php" value = Update </td>';
+                echo            '<td><input type = button value = Delete </td>';
 
                 echo '</tr>';
             }

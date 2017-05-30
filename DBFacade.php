@@ -87,21 +87,45 @@ class DBFacade
     }
 
     public function displayTaxi()
+{
+    $taxiList = array();
+
+    try {
+        $stmt = $this->db->prepare("SELECT * 
+                                        FROM taxi");
+        $stmt->execute();
+
+        $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($stmt->rowCount() > 0) {
+            foreach ($row as $taxi) {
+                array_push($taxiList, $taxi);
+
+            }
+            return $taxiList;
+
+        }
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+    public function displayOrder()
     {
-        $taxiList = array();
+        $orderList = array();
 
         try {
             $stmt = $this->db->prepare("SELECT * 
-                                        FROM taxi");
+                                        FROM ordertable");
             $stmt->execute();
 
             $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if ($stmt->rowCount() > 0) {
-                foreach ($row as $taxi) {
-                    array_push($taxiList, $taxi);
+                foreach ($row as $order) {
+                    array_push($orderList, $order);
 
                 }
-                return $taxiList;
+                return $orderList;
 
             }
 
@@ -109,6 +133,32 @@ class DBFacade
             echo $e->getMessage();
         }
     }
+
+    public function displayMatchedOrders()
+    {
+        $matchedOrderList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM matchedorder");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $matchedOrder) {
+                    array_push($matchedOrderList, $matchedOrder);
+
+                }
+                return $matchedOrderList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
 
     public function createCustomer($firstName, $lastName, $email, $mobileNumber, $password)
     {
