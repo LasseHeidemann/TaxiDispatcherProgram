@@ -59,6 +59,7 @@ include "DBConnect.php";
                 <?php
 
                 $orders = $dbFac->displayOrder();
+                $status_colors = array(0=> '#0000FF', 2 => '#00FF00');
                 foreach ($orders as $order => $value){
                     foreach ($value as $subvalue => $valueTwo){
 
@@ -68,18 +69,27 @@ include "DBConnect.php";
                         echo            '<td>'.$valueTwo["Location"].'</td>';
                         echo            '<td>'.$valueTwo["Destination"].'</td>';
                         echo            '<td>'.$valueTwo["Time"].'</td>';
-                        echo            '<td>'.$valueTwo["SharedTaxi"].'</td>';
+
+                                        if($valueTwo["SharedTaxi"] == 0){
+                                            echo'<td style = "background-color: #FFFFFF"></td>';}
+
+                                        if($valueTwo["SharedTaxi"] == 1){
+                                            echo'<td style = "background-color: #008000"></td>';}
+
                         echo            '<td>'.$valueTwo["Persons"].'</td>';
                         echo            '<td>'.$valueTwo["Childseats"].'</td>';
                         echo            '<td>'.$valueTwo["Handicapped"].'</td>';
+                                        '<td style = "background-color: <?php echo $status["SharedTaxi"]; ?>;">';
                         echo            '<td><input type = button a href="UpdateTaxi.php" value = Update </td>';
                         echo            '<td><input type = button a href="UpdateTaxi.php" value = GO! </td>';
+
 
                         echo '</tr>';
                     }
                 }
 
                 ?>
+
                 </tbody>
             </table>
 
@@ -91,7 +101,7 @@ include "DBConnect.php";
 </div>
 
 <footer>
-    <p> All rights reserved </p>
+    <p> Welcome to our Taxi Company </p>
 </footer>
 
 </body>

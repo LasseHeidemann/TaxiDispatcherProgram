@@ -87,7 +87,7 @@ include "DBConnect.php";
     </div>
 
     <footer>
-        <p> All rights reserved </p>
+        <p> Welcome to our Taxi Company </p>
     </footer>
 
 </body>
