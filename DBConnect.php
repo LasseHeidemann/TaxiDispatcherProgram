@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * User: Lasse
- * Date: 25.05.2017
+ * Date: 22.05.2017
  * Time: 19:20
  */
 
@@ -20,7 +20,6 @@ try{
 }
 
 include_once 'DBFacade.php';
-//$user = new User($DB_connect);
 $dbFac = new DBFacade($DB_connect);
 
 

@@ -1,52 +1,41 @@
 <?php
 
-
-
 $title = "Taxis";
 
 $content = '<h1>Taxis</h1>
 
 <a href="CreateNewTaxi.php"> Add a new Taxi</a><br/> ';
 
-include  'Template.php';
 include "DBConnect.php";
 
-function CreateOverviewTable()
-{
-    $result = "
+$content ="
+    
      <table class = 'overviewTable'
-     <tr>
-            <td></td>
-            <td></td>
-            <td><b>TaxiID</b></td>
-            <td><b>CarName</b></td>
-            <td><b>CarBrand</b></td>
-            <td><b>CarSeats</b></td>
-            <td><b>LicensePlate</b></td>
-      </tr>";
+     <thead></thead>
+            <th><b>ID</b></th>
+            <th><b>Name</b></th>
+            <th><b>Brand</b></th>
+            <th><b>Seats</b></th>
+            <th><b>Licenseplate</b></th>
+            <th></th>
+            <th></th>
+     </thead>
+     <tbody>";
+    $taxis = $dbFac->displayTaxi();
+    foreach ($taxis as $taxi => $value){
+        foreach ($value as $subvalue => $valueTwo){
 
-    $databaseFacade = new DBFacade();
-    $databaseFacade->displayTaxi();
-    $taxiArray = array();
-
-    while ($row = mysql_fetch_array($result)){
-
+            <tr>
+            <td> . $valueTwo ['id'] .</td>
+                        <td>".$valueTwo[TaxiID]."</td>
+                        <td>".$valueTwo[CarName]."</td>
+                        <td>".$valueTwo[Carbrand]."</td>
+                        <td>".$valueTwo[CarSeats]."</td>
+                        <td>".$valueTwo[LicensePlate]."</td>
+                        <td><button type = 'submit' data-href = UpdateTaxi.php?id=".$valueTwo['id'].">Update</a></td>
+                        <td><button type = 'submit' >Delete</input></td>
+                        </tr>;
     }
-
-    foreach ($taxiArray as $key => $value){
-        $result = $result .
-            "<tr>
-                        <td><a href '' >Update</a></td>
-                        <td><a href '' >Delete</a></td>
-                        <td>$value->TaxiID</td>
-                        <td>$value->CarName</td>
-                        <td>$value->CarBrand</td>
-                        <td>$value->CarSeats</td>
-                        <td>$value->LicensePlate</td>
-                        </tr>";
-
-    }
-    $result = $result . "</table>";
-    return $result;
-
 }
+";
+include  'Template.php';
