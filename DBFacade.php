@@ -25,7 +25,7 @@ class DBFacade
     {
         try {
             $stmt = $this->db->prepare("INSERT INTO Taxi(CarName, CarBrand, CarSeats, LicensePlate) 
-                                            VALUES(CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate)");
+                                            VALUES(:carName, :carBrand, :carSeats, :licensePlate)");
 
             $stmt->bindParam(':carName', $carName);
             $stmt->bindParam(':carBrand', $carBrand);
@@ -67,8 +67,8 @@ class DBFacade
     public function editTaxi($carName, $carBrand, $carSeats, $licensePlate, $taxiID){
         try{
             $stmt = $this->db->prepare("UPDATE taxi 
-                                        SET CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate
-                                        WHERE TaxiID =:taxiID");
+                                        SET :carName, :carBrand, :carSeats, :licensePlate
+                                        WHERE :taxiID");
             $stmt->bindParam(':carName', htmlspecialchars($carName), PDO::PARAM_STR);
             $stmt->bindParam(':carBrand', htmlspecialchars($carBrand), PDO::PARAM_STR);
             $stmt->bindParam(':carSeats', $carSeats, PDO::PARAM_INT);
