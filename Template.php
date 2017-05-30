@@ -27,6 +27,10 @@
             <?php echo $content; ?>
             </div>
 
+            <div id="sidebar">
+
+            </div>
+
             <footer>
             <p> All rights reserved </p>
             </footer>

@@ -25,7 +25,7 @@ class DBFacade
     {
         try {
             $stmt = $this->db->prepare("INSERT INTO Taxi(CarName, CarBrand, CarSeats, LicensePlate) 
-                                            VALUES(CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate)");
+                                            VALUES(:carName,:carBrand,:carSeats,:licensePlate)");
 
             $stmt->bindParam(':carName', $carName);
             $stmt->bindParam(':carBrand', $carBrand);
@@ -86,6 +86,29 @@ class DBFacade
         }
     }
 
+    public function displayTaxi()
+    {
+        $taxiList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM taxi");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $taxi) {
+                    array_push($taxiList, $taxi);
+
+                }
+                return $taxiList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
 
     public function createCustomer($firstName, $lastName, $email, $mobileNumber, $password)
     {
