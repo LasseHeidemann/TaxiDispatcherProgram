@@ -87,5 +87,27 @@ class DBFacade
     }
 
 
+    public function createCustomer($firstName, $lastName, $email, $mobileNumber, $password)
+    {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO Customer(FirstName, LastName, Email, MobileNumber, Password) 
+                                            VALUES(:firstName, :lastName, :email, :mobileNumber, :password)");
+
+            $stmt->bindParam(':firstName', $firstName);
+            $stmt->bindParam(':lastName', $lastName);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':mobileNumber', $mobileNumber);
+            $stmt->bindParam(':password', $password);
+            if($stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+
 
 }
