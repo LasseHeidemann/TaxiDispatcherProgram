@@ -6,10 +6,10 @@
  * Time: 19:20
  */
 
-$DB_host = "localhost";
-$DB_user = "root";
-$DB_pass = "";
-$DB_name = "TaxiApp";
+$DB_host = "sql11.freemysqlhosting.net:3306";
+$DB_user = "sql11177551";
+$DB_pass = "kgwa1WnjEC";
+$DB_name = "sql11177551";
 
 
 try{
