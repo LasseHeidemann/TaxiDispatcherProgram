@@ -8,10 +8,7 @@
 
 include 'DBConnect.php';
 
-echo $dbFac->createTaxi("h","dsa","4","ab124");
-
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-    echo $_POST['FirstName'];
     if (isset($_POST['FirstName']) && isset($_POST['LastName']) && isset($_POST['Email']) && isset($_POST['MobileNumber']) &&
         isset($_POST['Password'])
     ) {
