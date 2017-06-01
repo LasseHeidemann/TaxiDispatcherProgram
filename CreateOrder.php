@@ -8,8 +8,10 @@
 
 include 'DBConnect.php';
 
+//echo $dbFac->createOrder(1, "here", "there", "12:00", 1, 2, 2, 0) ;
+
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-    if (isset($_POST['CustomerID']) && isset($_POST['Location']) && isset($_POST['Destination']) && isset($_POST['DateTime']) &&
+    if (isset($_POST['CustomerID']) && isset($_POST['Location']) && isset($_POST['Destination']) && isset($_POST['Time']) &&
         isset($_POST['SharedTaxi']) && isset($_POST['Persons'])&& isset($_POST['Childseats'])&& isset($_POST['Handicapped'])
 
     ) {
@@ -17,12 +19,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         $customerID = $_POST['CustomerID'];
         $location = $_POST['Location'];
         $destination = $_POST['Destination'];
-        $dateTime = $_POST['DateTime'];
+        $time = $_POST['Time'];
         $sharedTaxi = $_POST['SharedTaxi'];
         $persons = $_POST['Persons'];
         $childseats = $_POST['Childseats'];
         $handicapped = $_POST['Handicapped'];
 
-        echo $dbFac->createOrder($customerID, $location, $destination, $dateTime, $sharedTaxi, $persons, $childseats, $handicapped);
+        echo $dbFac->createOrder($customerID, $location, $destination, $time, $sharedTaxi, $persons, $childseats, $handicapped);
     }
 }

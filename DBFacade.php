@@ -181,20 +181,20 @@ class DBFacade
         }
     }
 
-    public function createOrder($customerID, $location, $destination, $dateTime, $sharedTaxi, $persons, $childseats, $handicapped)
+    public function createOrder($customerID, $location, $destination, $time, $sharedTaxi, $persons, $childseats, $handicapped)
     {
         try {
-            $stmt = $this->db->prepare("INSERT INTO Order(CustomerID, Location, Destination, DateTime, SharedTaxi, Persons, Childseats, Handicapped) 
-                                            VALUES(:customerID, location, destination, dateTime, sharedTaxi, persons, childseats, handicapped)");
+            $stmt = $this->db->prepare("INSERT INTO OrderTable(CustomerID, Location, Destination, Time, SharedTaxi, Persons, ChildSeats, Handicapped) 
+                                            VALUES(:customerID, :location, :destination, :time, :sharedTaxi, :persons, :childseats, :handicapped)");
 
-            $stmt->bindParam(':customerID', $customerID);
+            $stmt->bindParam(':customerID', intval($customerID));
             $stmt->bindParam(':location', $location);
-            $stmt->bindParam('destination', $destination);
-            $stmt->bindParam(':dateTime', $dateTime);
-            $stmt->bindParam(':sharedTaxi', $sharedTaxi);
-            $stmt->bindParam(':persons', $persons);
-            $stmt->bindParam(':childSeats', $childseats);
-            $stmt->bindParam(':handicapped', $handicapped);
+            $stmt->bindParam(':destination', $destination);
+            $stmt->bindParam(':time', $time);
+            $stmt->bindParam(':sharedTaxi', intval($sharedTaxi));
+            $stmt->bindParam(':persons', intval($persons));
+            $stmt->bindParam(':childseats', intval($childseats));
+            $stmt->bindParam(':handicapped', intval($handicapped));
             if($stmt->execute()){
                 return true;
             }else{
