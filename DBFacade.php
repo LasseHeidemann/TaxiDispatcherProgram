@@ -66,9 +66,9 @@ class DBFacade
      */
     public function editTaxi($carName, $carBrand, $carSeats, $licensePlate, $taxiID){
         try{
-            $stmt = $this->db->prepare("UPDATE Taxi 
-                                        SET CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate
-                                        WHERE TaxiID =:taxiID");
+            $stmt = $this->db->prepare("UPDATE taxi 
+                                        SET :carName, :carBrand, :carSeats, :licensePlate
+                                        WHERE :taxiID");
             $stmt->bindParam(':carName', htmlspecialchars($carName), PDO::PARAM_STR);
             $stmt->bindParam(':carBrand', htmlspecialchars($carBrand), PDO::PARAM_STR);
             $stmt->bindParam(':carSeats', $carSeats, PDO::PARAM_INT);
@@ -180,6 +180,33 @@ class DBFacade
             echo $e->getMessage();
         }
     }
+
+    public function createOrder($customerID, $location, $destination, $dateTime, $sharedTaxi, $persons, $childseats, $handicapped)
+    {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO Order(CustomerID, Location, Destination, DateTime, SharedTaxi, Persons, Childseats, Handicapped) 
+                                            VALUES(:customerID, location, destination, dateTime, sharedTaxi, persons, childseats, handicapped)");
+
+            $stmt->bindParam(':customerID', $customerID);
+            $stmt->bindParam(':location', $location);
+            $stmt->bindParam('destination', $destination);
+            $stmt->bindParam(':dateTime', $dateTime);
+            $stmt->bindParam(':sharedTaxi', $sharedTaxi);
+            $stmt->bindParam(':persons', $persons);
+            $stmt->bindParam(':childSeats', $childseats);
+            $stmt->bindParam(':handicapped', $handicapped);
+            if($stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+
+
 
 
 
