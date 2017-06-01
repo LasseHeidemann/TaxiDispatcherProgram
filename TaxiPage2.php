@@ -57,7 +57,6 @@ include "DBConnect.php";
 
 
 
-
         $taxis = $dbFac->displayTaxi();
         foreach ($taxis as $taxi => $value){
             foreach ($value as $subvalue => $valueTwo){
@@ -69,14 +68,17 @@ include "DBConnect.php";
                 echo            '<td>'.$valueTwo["CarSeats"].'</td>';
                 echo            '<td>'.$valueTwo["LicensePlate"].'</td>';
                 echo            '<td><input type = button a href="UpdateTaxi.php" value = Update </td>';
-                echo            '<td><form action="" method="post"></form><input type = button name = delete value = Delete </td>';
+                echo            '<td><form action="" method="post"></form> <input type = button name = delete value = Delete </td>';
 
                                  if(isset($_POST['delete'])){
-
+                                    if($dbFac->deleteTaxi(["TaxiID"])){
+                                    }else{
+                                     echo "ERROR";
                                  }
+                                 };
                 echo '</tr>';
             }
-        }
+        };
 
         ?>
             </tbody>
