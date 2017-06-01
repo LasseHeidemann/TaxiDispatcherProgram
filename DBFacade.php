@@ -181,6 +181,33 @@ class DBFacade
         }
     }
 
+    public function createOrder($customerID, $location, $destination, $dateTime, $sharedTaxi, $persons, $childseats, $handicapped)
+    {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO Order(CustomerID, Location, Destination, DateTime, SharedTaxi, Persons, Childseats, Handicapped) 
+                                            VALUES(:customerID, location, destination, dateTime, sharedTaxi, persons, childseats, handicapped)");
+
+            $stmt->bindParam(':customerID', $customerID);
+            $stmt->bindParam(':location', $location);
+            $stmt->bindParam('destination', $destination);
+            $stmt->bindParam(':dateTime', $dateTime);
+            $stmt->bindParam(':sharedTaxi', $sharedTaxi);
+            $stmt->bindParam(':persons', $persons);
+            $stmt->bindParam(':childSeats', $childseats);
+            $stmt->bindParam(':handicapped', $handicapped);
+            if($stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+
+
+
 
 
 }
