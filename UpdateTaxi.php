@@ -5,3 +5,5 @@
  * Date: 29.05.2017
  * Time: 12:02
  */
+
+include 'Template.php';

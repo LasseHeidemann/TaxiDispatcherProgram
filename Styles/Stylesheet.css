@@ -30,20 +30,11 @@ body p
 
 #content_area
 {
+    postion: fixed;
     float: left;
     width: 750px;
     margin: 20px 0 20px 0;
     padding: 10px;
-}
-
-#sidebar
-{
-    float: right;
-    width: 250px;
-    height: 400px;
-    margin: 20px 10px;
-    padding: 10px;
-    border: 2px solid #E3E3E3;
 }
 
 footer

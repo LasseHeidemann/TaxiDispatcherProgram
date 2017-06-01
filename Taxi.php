@@ -8,11 +8,10 @@
 
 class Taxi
 {
-    private $taxiID, $carName, $carBrand, $carSeats, $licensePlate;
+    private $carName, $carBrand, $carSeats, $licensePlate;
 
     /**
      * Taxi constructor.
-     * @param $taxiID
      * @param $carName
      * @param $carBrand
      * @param $carSeats

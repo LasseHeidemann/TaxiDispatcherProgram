@@ -17,9 +17,10 @@
 
             <nav id = "navigation">
                 <ul id = "nav">
-                    <li><a href= "Index.php">Home</a></li>
-                    <li><a href= "BookingPage.php">Booking</a></li>
-                    <li><a href= "TaxiPage.php">Taxis</a></li>
+                    <li><a href= "RequestPage.php">Requests</a></li>
+                    <li><a href= "BookingsPage.php">Bookings</a></li>
+                    <li><a href= "TaxiPage2.php">Taxis</a></li>
+                    <li><a href= "SharedModePage.php">Shared Mode</a></li>
                 </ul>
              </nav>
 
@@ -27,8 +28,11 @@
             <?php echo $content; ?>
             </div>
 
+
+            </div>
+
             <footer>
-            <p> All rights reserved </p>
+            <p> Welcome to our Taxi Company </p>
             </footer>
 
     </body>

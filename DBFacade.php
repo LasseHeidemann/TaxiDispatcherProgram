@@ -25,7 +25,7 @@ class DBFacade
     {
         try {
             $stmt = $this->db->prepare("INSERT INTO Taxi(CarName, CarBrand, CarSeats, LicensePlate) 
-                                            VALUES(:carName, :carBrand, :carSeats, :licensePlate)");
+                                            VALUES(:carName,:carBrand,:carSeats,:licensePlate)");
 
             $stmt->bindParam(':carName', $carName);
             $stmt->bindParam(':carBrand', $carBrand);
@@ -85,6 +85,79 @@ class DBFacade
             echo $e->getMessage();
         }
     }
+
+    public function displayTaxi()
+{
+    $taxiList = array();
+
+    try {
+        $stmt = $this->db->prepare("SELECT * 
+                                        FROM Taxi");
+        $stmt->execute();
+
+        $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($stmt->rowCount() > 0) {
+            foreach ($row as $taxi) {
+                array_push($taxiList, $taxi);
+
+            }
+            return $taxiList;
+
+        }
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+    public function displayOrder()
+    {
+        $orderList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM OrderTable");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $order) {
+                    array_push($orderList, $order);
+
+                }
+                return $orderList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function displayMatchedOrders()
+    {
+        $matchedOrderList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM MatchedOrder");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $matchedOrder) {
+                    array_push($matchedOrderList, $matchedOrder);
+
+                }
+                return $matchedOrderList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
 
 
     public function createCustomer($firstName, $lastName, $email, $mobileNumber, $password)

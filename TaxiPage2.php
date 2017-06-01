@@ -2,16 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: Lasse
- * Date: 29.05.2017
- * Time: 12:16
+ * Date: 30.05.2017
+ * Time: 10:16
  */
+include "DBConnect.php";
 
 ?>
+
 
 <html>
     <head>
 
-        <title>  </title>
+        <title>  Taxis  </title>
 <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
@@ -22,21 +24,75 @@
     <div id = "banner">
     </div>
 
-
     <nav id = "navigation">
         <ul id = "nav">
-            <li><a href= "Index.php">Home</a></li>
-            <li><a href= "BookingPage.php">Booking</a></li>
-            <li><a href= "TaxiPage.php">Taxis</a></li>
+            <li><a href= "RequestPage.php">Requests</a></li>
+            <li><a href= "BookingsPage.php">Bookings</a></li>
+            <li><a href= "TaxiPage2.php">Taxis</a></li>
+            <li><a href= "SharedModePage.php">Shared Mode</a></li>
         </ul>
     </nav>
 
+    <pos>
     <div id = "conecnt_area">
-        <?php echo $content; ?>
+
+        <br>
+
+        <table class = 'overviewTable'
+        <table border=1 cellspacing=1 cellpadding=2 align="center">
+        <thead></thead>
+        <th><b>ID</b></th>
+        <th><b>Name</b></th>
+        <th><b>Brand</b></th>
+        <th><b>Seats</b></th>
+        <th><b>Licenseplate</b></th>
+
+
+
+        </thead>
+            <tbody>
+
+        <?php
+
+
+
+
+
+        $taxis = $dbFac->displayTaxi();
+        foreach ($taxis as $taxi => $value){
+            foreach ($value as $subvalue => $valueTwo){
+
+                echo '<tr>';
+                echo            '<td>'.$valueTwo["TaxiID"].'</td>';
+                echo            '<td>'.$valueTwo["CarName"].'</td>';
+                echo            '<td>'.$valueTwo["CarBrand"].'</td>';
+                echo            '<td>'.$valueTwo["CarSeats"].'</td>';
+                echo            '<td>'.$valueTwo["LicensePlate"].'</td>';
+                echo            '<td><input type = button a href="UpdateTaxi.php" value = Update </td>';
+                echo            '<td><form action="" method="post"></form><input type = button name = delete value = Delete </td>';
+
+                                 if(isset($_POST['delete'])){
+
+                                 }
+                echo '</tr>';
+            }
+        }
+
+        ?>
+            </tbody>
+        </table>
+
+        <br>
+
+        <a href="CreateNewTaxi.php"> Add a new Taxi</a><br/>
+
+    </div>
+    </pos>
+
     </div>
 
     <footer>
-        <p> All rights reserved </p>
+        <p> Welcome to our Taxi Company </p>
     </footer>
 
 </body>
