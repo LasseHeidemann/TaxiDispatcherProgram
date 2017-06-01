@@ -37,16 +37,6 @@ body p
     padding: 10px;
 }
 
-#sidebar
-{
-    float: right;
-    width: 250px;
-    height: 400px;
-    margin: 20px 10px;
-    padding: 10px;
-    border: 2px solid #E3E3E3;
-}
-
 footer
 {
     clear: both;

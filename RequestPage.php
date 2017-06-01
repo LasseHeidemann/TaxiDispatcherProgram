@@ -51,7 +51,7 @@ include "DBConnect.php";
                 <th><b>Childseats</b></th>
                 <th>Handicapped</th>
                 <th>Select Taxi</th>
-                <th></th>
+
 
                 </thead>
                 <tbody>
@@ -60,32 +60,63 @@ include "DBConnect.php";
 
                 $orders = $dbFac->displayOrder();
                 $status_colors = array(0=> '#0000FF', 2 => '#00FF00');
-                foreach ($orders as $order => $value){
-                    foreach ($value as $subvalue => $valueTwo){
+                foreach ($orders as $order => $value) {
+                    foreach ($value as $subvalue => $valueTwo) {
+
+                        if($valueTwo["OrderStatus"] == 0){
 
                         echo '<tr>';
-                        echo            '<td>'.$valueTwo["OrderID"].'</td>';
-                        echo            '<td>'.$valueTwo["CustomerID"].'</td>';
-                        echo            '<td>'.$valueTwo["Location"].'</td>';
-                        echo            '<td>'.$valueTwo["Destination"].'</td>';
-                        echo            '<td>'.$valueTwo["Time"].'</td>';
+                        echo '<td>' . $valueTwo["OrderID"] . '</td>';
+                        echo '<td>' . $valueTwo["CustomerID"] . '</td>';
+                        echo '<td>' . $valueTwo["Location"] . '</td>';
+                        echo '<td>' . $valueTwo["Destination"] . '</td>';
+                        echo '<td>' . $valueTwo["Time"] . '</td>';
 
-                                        if($valueTwo["SharedTaxi"] == 0){
-                                            echo'<td style = "background-color: #FFFFFF"></td>';}
+                        if ($valueTwo["SharedTaxi"] == 0) {
+                            echo '<td style = "background-color: #FFFFFF"></td>';
+                        }
 
-                                        if($valueTwo["SharedTaxi"] == 1){
-                                            echo'<td style = "background-color: #008000"></td>';}
+                        if ($valueTwo["SharedTaxi"] == 1) {
+                            echo '<td style = "background-color: #008000"></td>';
+                        }
 
-                        echo            '<td>'.$valueTwo["Persons"].'</td>';
-                        echo            '<td>'.$valueTwo["Childseats"].'</td>';
-                        echo            '<td>'.$valueTwo["Handicapped"].'</td>';
-                                        '<td style = "background-color: <?php echo $status["SharedTaxi"]; ?>;">';
-                        echo            '<td><input type = button a href="UpdateTaxi.php" value = Update </td>';
-                        echo            '<td><input type = button a href="UpdateTaxi.php" value = GO! </td>';
+                        echo '<td>' . $valueTwo["Persons"] . '</td>';
+                        echo '<td>' . $valueTwo["Childseats"] . '</td>';
 
+                        if ($valueTwo["Handicapped"] == 0) {
+                            echo '<td style = "background-color: #FFFFFF"></td>';
+                        }
+
+                        if ($valueTwo["Handicapped"] == 1) {
+                            echo '<td style = "background-color: #008000"></td>';
+                        }
+
+                        echo "'<td><select id='selectedTaxi' name = 'selectedTaxi'>";
+
+                        $taxis = $dbFac->displayTaxi();
+                        foreach ($taxis as $taxi => $value) {
+                            foreach ($value as $subvalue => $valueTwo) {
+                                echo '<option value=' . $valueTwo["TaxiID"] . '>Taxi: ' . $valueTwo["TaxiID"] . ',  ' . $valueTwo["CarName"] . ', Seats: ' . $valueTwo["CarSeats"] . ' </option>';
+                            }
+                        }
+                        echo '</select></td>';
+
+                        echo '<td><input type = button name = submit a href="UpdateTaxi.php" value = GO! </td>';
+
+                            if($_POST['submit'] && $_POST['submit'] != 0)
+                            {
+                                $selectedTaxi=$_POST['selectedTaxi'];
+
+                                echo $selectedTaxi;
+                            }
 
                         echo '</tr>';
+                        }
+
                     }
+
+
+
                 }
 
                 ?>

@@ -66,7 +66,7 @@ class DBFacade
      */
     public function editTaxi($carName, $carBrand, $carSeats, $licensePlate, $taxiID){
         try{
-            $stmt = $this->db->prepare("UPDATE taxi 
+            $stmt = $this->db->prepare("UPDATE Taxi 
                                         SET CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate
                                         WHERE TaxiID =:taxiID");
             $stmt->bindParam(':carName', htmlspecialchars($carName), PDO::PARAM_STR);
@@ -92,7 +92,7 @@ class DBFacade
 
     try {
         $stmt = $this->db->prepare("SELECT * 
-                                        FROM taxi");
+                                        FROM Taxi");
         $stmt->execute();
 
         $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -116,7 +116,7 @@ class DBFacade
 
         try {
             $stmt = $this->db->prepare("SELECT * 
-                                        FROM ordertable");
+                                        FROM OrderTable");
             $stmt->execute();
 
             $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -140,7 +140,7 @@ class DBFacade
 
         try {
             $stmt = $this->db->prepare("SELECT * 
-                                        FROM matchedorder");
+                                        FROM MatchedOrder");
             $stmt->execute();
 
             $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
