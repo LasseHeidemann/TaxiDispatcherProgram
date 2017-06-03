@@ -44,15 +44,12 @@ class DBFacade
 
     public function deleteTaxi($taxiID){
         try{
-            $stmt = $this->db->prepare("DELETE FROM taxi 
-                                        WHERE TaxiID=:taxiID
-                                        LIMIT 1");
-            $stmt->execute(array(':taxiID'=>$taxiID));
-            $taxiRow = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($stmt->rowCount() > 0){
-                echo 'Taxi deleted';
+            $stmt = $this->db->prepare("DELETE FROM Taxi 
+                                        WHERE TaxiID=:taxiID");
+            if($stmt->execute(array(':taxiID'=>$taxiID))){
+                return true;
             }else{
-                echo 'Error no Taxi found';
+                return false;
             }
         }catch(PDOException $e){
             echo $e->getMessage();
@@ -80,6 +77,105 @@ class DBFacade
                 echo 'Taxi was updated';
             }else{
                 echo 'There was an error while updating the Taxi';
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function setTaxiAvailable($taxiID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Taxi
+                                        Set Available = 1
+                                        WHERE taxiID=:taxiID");
+            if($stmt->execute(array(':taxiID'=>$taxiID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function setTaxiBusy($taxiID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Taxi
+                                        Set Available = 0
+                                        WHERE TaxiID=:taxiID");
+            if($stmt->execute(array(':modeID'=>$taxiID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function displayMode()
+    {
+        $modeList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM Modes");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $mode) {
+                    array_push($modeList, $mode);
+
+                }
+                return $modeList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function changeStatusToActive($modeID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Modes
+                                        Set Modestatus = 1
+                                        WHERE ModeID=:modeID");
+            if($stmt->execute(array(':modeID'=>$modeID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function changeStatusToInactive($modeID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Modes
+                                        Set Modestatus = 0
+                                        WHERE ModeID=:modeID");
+            if($stmt->execute(array(':modeID'=>$modeID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function setMatchedOrderToCompleted($matchedOrderID){
+        try{
+            $stmt = $this->db->prepare("UPDATE MatchedOrder
+                                        Set MatchedOrderStatus = 1
+                                        WHERE MatchedID=:matchedOrderID");
+            if($stmt->execute(array(':matchedOrderID'=>$matchedOrderID))){
+                return true;
+            }else{
+                return false;
             }
         }catch(PDOException $e){
             echo $e->getMessage();
@@ -158,7 +254,34 @@ class DBFacade
         }
     }
 
+    function refresh( $time ){
+        $current_url = $_SERVER[ 'REQUEST_URI' ];
+        return header( "Refresh: " . $time . "; URL=$current_url" );
+    }
 
+    public function displayCustomer()
+    {
+        $customerList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM Customer");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $customer) {
+                    array_push($customerList, $customer);
+
+                }
+                return $customerList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
 
     public function createCustomer($firstName, $lastName, $email, $mobileNumber, $password)
     {
@@ -181,6 +304,9 @@ class DBFacade
         }
     }
 
-
+    function redirect($url)
+    {
+        header('Location: ' . $url);
+    }
 
 }

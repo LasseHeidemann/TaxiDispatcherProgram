@@ -9,15 +9,13 @@ include "DBConnect.php";
 
 ?>
 
-
 <html>
 <head>
 
-    <title> Orders </title>
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
-
+    <meta http-equiv="refresh" content="5" >
 <body>
 
 <div id = "wrapper">
@@ -28,8 +26,9 @@ include "DBConnect.php";
         <ul id = "nav">
             <li><a href= "RequestPage.php">Requests</a></li>
             <li><a href= "BookingsPage.php">Bookings</a></li>
-            <li><a href= "TaxiPage2.php">Taxis</a></li>
-            <li><a href= "SharedModePage.php">Shared Mode</a></li>
+            <li><a href= "TaxiPage.php">Taxis</a></li>
+            <li><a href= "ModePage.php">Shared Mode</a></li>
+            <li><a href= "CustomerPage.php">Customer</a></li>
         </ul>
     </nav>
 
@@ -81,7 +80,7 @@ include "DBConnect.php";
                         }
 
                         echo '<td>' . $valueTwo["Persons"] . '</td>';
-                        echo '<td>' . $valueTwo["Childseats"] . '</td>';
+                        echo '<td>' . $valueTwo["ChildSeats"] . '</td>';
 
                         if ($valueTwo["Handicapped"] == 0) {
                             echo '<td style = "background-color: #FFFFFF"></td>';
@@ -91,12 +90,15 @@ include "DBConnect.php";
                             echo '<td style = "background-color: #008000"></td>';
                         }
 
-                        echo "'<td><select id='selectedTaxi' name = 'selectedTaxi'>";
+                        echo "<td><select id='selectedTaxi' name = 'selectedTaxi'>";
 
                         $taxis = $dbFac->displayTaxi();
                         foreach ($taxis as $taxi => $value) {
                             foreach ($value as $subvalue => $valueTwo) {
-                                echo '<option value=' . $valueTwo["TaxiID"] . '>Taxi: ' . $valueTwo["TaxiID"] . ',  ' . $valueTwo["CarName"] . ', Seats: ' . $valueTwo["CarSeats"] . ' </option>';
+
+                                if($valueTwo["Available"] == 1){
+                                    echo '<option value=' . $valueTwo["TaxiID"] . '>Taxi: ' . $valueTwo["TaxiID"] . ',  ' . $valueTwo["CarName"] . ', Seats: ' . $valueTwo["CarSeats"] . ' </option>';
+                                }
                             }
                         }
                         echo '</select></td>';
@@ -114,9 +116,6 @@ include "DBConnect.php";
                         }
 
                     }
-
-
-
                 }
 
                 ?>

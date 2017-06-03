@@ -1,20 +1,18 @@
-
 <?php
 /**
  * Created by PhpStorm.
  * User: Lasse
- * Date: 30.05.2017
- * Time: 10:16
+ * Date: 01.06.2017
+ * Time: 12:04
  */
+
 include "DBConnect.php";
 
 ?>
 
-
 <html>
 <head>
 
-    <title> Bookings </title>
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
@@ -43,37 +41,29 @@ include "DBConnect.php";
             <table class = 'overviewTable'
             <table border=1 cellspacing=1 cellpadding=2 align="center">
                 <thead></thead>
-                <th><b>Booking ID</b></th>
-                <th><b>Order ID</b></th>
-                <th><b>Taxi ID</b></th>
-
-
+                <th><b>ID</b></th>
+                <th><b>Firstname</b></th>
+                <th><b>Lastname</b></th>
+                <th><b>Email</b></th>
+                <th><b>Mobile Number</b></th>
                 </thead>
                 <tbody>
 
                 <?php
 
-                $matchedOrders = $dbFac->displayMatchedOrders();
-                foreach ($matchedOrders as $matchedOrders => $value){
+                $customer = $dbFac->displayCustomer();
+                foreach ($customer as $customer => $value){
                     foreach ($value as $subvalue => $valueTwo){
 
-                        if($valueTwo["MatchedOrderStatus"] == 0){
-
                         echo '<tr>';
-                        echo            '<td>'.$valueTwo["MatchedID"].'</td>';
-                        echo            '<td>'.$valueTwo["OrderID"].'</td>';
-                        echo            '<td>'.$valueTwo["TaxiID"].'</td>';
-                        echo            '<td><form action="" method="post"><button name = complete value = "'.$valueTwo["MatchedID"].'"> Completed</button> </form></td>';
-
-                        if(isset($_POST['complete'])) {
-                            $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
-                            $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
-                            $dbFac->refresh(0);
-                        }
-                        echo '</tr>';
+                        echo            '<td>'.$valueTwo["CustomerID"].'</td>';
+                        echo            '<td>'.$valueTwo["FirstName"].'</td>';
+                        echo            '<td>'.$valueTwo["LastName"].'</td>';
+                        echo            '<td>'.$valueTwo["Email"].'</td>';
+                        echo            '<td>'.$valueTwo["MobileNumber"].'</td>';
                     }
-                }
-                }
+                };
+
                 ?>
                 </tbody>
             </table>

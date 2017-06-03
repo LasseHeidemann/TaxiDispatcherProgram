@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Created by PhpStorm.
@@ -13,8 +12,6 @@ include "DBConnect.php";
 
 <html>
 <head>
-
-    <title> Bookings </title>
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
@@ -43,9 +40,8 @@ include "DBConnect.php";
             <table class = 'overviewTable'
             <table border=1 cellspacing=1 cellpadding=2 align="center">
                 <thead></thead>
-                <th><b>Booking ID</b></th>
-                <th><b>Order ID</b></th>
-                <th><b>Taxi ID</b></th>
+                <th><b>Mode</b></th>
+                <th><b>Status</b></th>
 
 
                 </thead>
@@ -53,27 +49,38 @@ include "DBConnect.php";
 
                 <?php
 
-                $matchedOrders = $dbFac->displayMatchedOrders();
-                foreach ($matchedOrders as $matchedOrders => $value){
+                $mode = $dbFac->displayMode();
+                foreach ($mode as $mode => $value){
                     foreach ($value as $subvalue => $valueTwo){
 
-                        if($valueTwo["MatchedOrderStatus"] == 0){
-
                         echo '<tr>';
-                        echo            '<td>'.$valueTwo["MatchedID"].'</td>';
-                        echo            '<td>'.$valueTwo["OrderID"].'</td>';
-                        echo            '<td>'.$valueTwo["TaxiID"].'</td>';
-                        echo            '<td><form action="" method="post"><button name = complete value = "'.$valueTwo["MatchedID"].'"> Completed</button> </form></td>';
+                        echo            '<td>'.$valueTwo["ModeName"].'</td>';
 
-                        if(isset($_POST['complete'])) {
-                            $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
-                            $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
-                            $dbFac->refresh(0);
+                        if ($valueTwo["ModeStatus"] == 0) {
+                            echo '<td style = "background-color: #FFFFFF"></td>';
                         }
-                        echo '</tr>';
+
+                        if ($valueTwo["ModeStatus"] == 1) {
+                            echo '<td style = "background-color: #008000"></td>';
+                        }
+
+                        echo'<td><form action="" method="post"> <button name = change value = "'.$valueTwo["ModeID"].'"> Change Status</button> </form></td>';
+
+                        if(isset($_POST['change'])) {
+
+                            if ($valueTwo["ModeStatus"] == 0) {
+                                $dbFac->changeStatusToActive($valueTwo["ModeID"]);
+                                $dbFac->refresh(0);
+                            }
+
+                            if ($valueTwo["ModeStatus"] == 1) {
+                                $dbFac->changeStatusToInactive($valueTwo["ModeID"]);
+                                $dbFac->refresh(0);
+                            }
+                        }
                     }
-                }
-                }
+                };
+
                 ?>
                 </tbody>
             </table>
