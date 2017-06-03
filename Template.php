@@ -19,8 +19,9 @@
                 <ul id = "nav">
                     <li><a href= "RequestPage.php">Requests</a></li>
                     <li><a href= "BookingsPage.php">Bookings</a></li>
-                    <li><a href= "TaxiPage2.php">Taxis</a></li>
-                    <li><a href= "SharedModePage.php">Shared Mode</a></li>
+                    <li><a href= "TaxiPage.php">Taxis</a></li>
+                    <li><a href= "ModePage.php">Shared Mode</a></li>
+                    <li><a href= "CustomerPage.php">Customer</a></li>
                 </ul>
              </nav>
 
