@@ -182,6 +182,36 @@ class DBFacade
         }
     }
 
+    public function setCustomerReputationPositiv($customerID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Customer
+                                        Set Reputation + 1
+                                        WHERE CustomerID=:customerID");
+            if($stmt->execute(array(':customerID'=>$customerID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function setCustomerReputationNegative($customerID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Customer
+                                        Set Reputation - 1
+                                        WHERE CustomerID=:customerID");
+            if($stmt->execute(array(':customerID'=>$customerID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
     public function displayTaxi()
 {
     $taxiList = array();

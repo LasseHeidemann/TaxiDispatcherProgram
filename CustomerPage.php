@@ -28,7 +28,7 @@ include "DBConnect.php";
             <li><a href= "RequestPage.php">Requests</a></li>
             <li><a href= "BookingsPage.php">Bookings</a></li>
             <li><a href= "TaxiPage.php">Taxis</a></li>
-            <li><a href= "ModePage.php">Shared Mode</a></li>
+            <li><a href= "ModePage.php">Mode</a></li>
             <li><a href= "CustomerPage.php">Customer</a></li>
         </ul>
     </nav>
@@ -46,6 +46,7 @@ include "DBConnect.php";
                 <th><b>Lastname</b></th>
                 <th><b>Email</b></th>
                 <th><b>Mobile Number</b></th>
+                <th><b>Reputation</b></th>
                 </thead>
                 <tbody>
 
@@ -61,6 +62,30 @@ include "DBConnect.php";
                         echo            '<td>'.$valueTwo["LastName"].'</td>';
                         echo            '<td>'.$valueTwo["Email"].'</td>';
                         echo            '<td>'.$valueTwo["MobileNumber"].'</td>';
+                        echo            '<td>'.$valueTwo["Reputation"].'</td>';
+
+                        if ($valueTwo["Reputation"] >= 0 ) {
+                            echo '<td style = "background-color: #008000"></td>';
+                        }
+
+                        if ($valueTwo["Reputation"] < 0 ) {
+                            echo '<td style = "background-color: #FF0000"></td>';
+                        }
+
+                        echo'<td><form action="" method="post"> <button name = setRepPositiv value = "'.$valueTwo["CustomerID"].'"> + Reputation</button> </form></td>';
+                        echo'<td><form action="" method="post"> <button name = setRepNegativ value = "'.$valueTwo["CustomerID"].'"> - Reputation</button> </form></td>';
+
+                        if(isset($_POST['setRepPositiv'])) {
+                            $dbFac->setCustomerReputationPositiv($valueTwo["CustomerID"]);
+                            $dbFac->refresh(0);
+                        }
+
+                        if(isset($_POST['setRepNeagtiv'])) {
+                            $dbFac->setCustomerReputationNegative($valueTwo["CustomerID"]);
+                            $dbFac->refresh(0);
+                        }
+
+
                     }
                 };
 
