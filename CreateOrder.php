@@ -8,8 +8,6 @@
 
 include 'DBConnect.php';
 
-//echo $dbFac->createOrder(1, "here", "there", "12:00", 1, 2, 2, 0) ;
-
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['CustomerID']) && isset($_POST['Location']) && isset($_POST['Destination']) && isset($_POST['Time']) &&
         isset($_POST['SharedTaxi']) && isset($_POST['Persons'])&& isset($_POST['Childseats'])&& isset($_POST['Handicapped'])

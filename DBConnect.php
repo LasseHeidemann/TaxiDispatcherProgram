@@ -6,10 +6,10 @@
  * Time: 19:20
  */
 
-$DB_host = "sql11.freemysqlhosting.net:3306";
-$DB_user = "sql11177551";
-$DB_pass = "kgwa1WnjEC";
-$DB_name = "sql11177551";
+$DB_host = "Nsterdt.rf.gd";
+$DB_user = "nsterdt_admin";
+$DB_pass = "VZg&CpH4VzTb";
+$DB_name = "nsterdt_taxiapp";
 
 
 try{
