@@ -328,6 +328,44 @@ class DBFacade
         }
     }
 
+    public function updateCustomerEmail($oldEmail, $newEmail){
+        try{
+            $stmt = $this->db->prepare("UPDATE Customer 
+                                        SET Email=:newEmail
+                                        WHERE Email=:oldEmail");
+            $stmt->bindParam(':oldEmail', $oldEmail);
+            $stmt->bindParam(':newEmail', $newEmail);
+            $result = $stmt->execute();
+
+            if($result){
+                echo 'Customer was updated';
+            }else{
+                echo 'There was an error while updating the Customer';
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function updateCustomerPassword($newPassword, $email){
+        try{
+            $stmt = $this->db->prepare("UPDATE Customer 
+                                        SET Password=:newPassword
+                                        WHERE Email=:email");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':newPassword', $newPassword);
+            $result = $stmt->execute();
+
+            if($result){
+                echo 'Customer was updated';
+            }else{
+                echo 'There was an error while updating the Customer';
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
 
 
 
