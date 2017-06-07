@@ -72,7 +72,7 @@ include "DBConnect.php";
 
                     if (isset($_POST['delete'])) {
                     if ($dbFac->deleteTaxi($_POST['delete']))
-                        $dbFac->refresh(0);
+                        $dbFac->redirect("TaxiPage.php");
                     } else {
 
                     }

@@ -79,12 +79,12 @@ include "DBConnect.php";
 
                 if(isset($_POST['setRepPositiv'])) {
                     $dbFac->setCustomerReputationPositiv($_POST['setRepPositiv']);
-                    $dbFac->refresh(0);
+                    $dbFac->redirect("CustomerPage.php");
                 }
 
                 if(isset($_POST['setRepNegativ'])) {
                     $dbFac->setCustomerReputationNegative($_POST['setRepNegativ']);
-                    $dbFac->refresh(0);
+                    $dbFac->redirect("CustomerPage.php");
                 }
 
                 ?>
