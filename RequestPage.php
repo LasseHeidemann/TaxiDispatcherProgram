@@ -113,7 +113,8 @@ include "DBConnect.php";
                     if (isset($_POST['submit'])) {
                         $selectedTaxi = $_POST['selected_Taxi'];
 
-                        $receiver = $dbFac->getCustomerEmail(["CustomerID"]);
+                        $customerID = $dbFac->getCustomerIDfromOrder($_POST['submit']);
+                        $receiver = $dbFac->getCustomerEmail($customerID);
                         $topic = "Information about your requested Taxi";
                         $from = "From: Unter Taxi <untertaxi@gmail.com>";
                         $text = "Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company";
