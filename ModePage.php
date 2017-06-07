@@ -70,12 +70,12 @@ include "DBConnect.php";
 
                             if ($valueTwo["ModeStatus"] == 0) {
                                 $dbFac->changeStatusToActive($valueTwo["ModeID"]);
-                                $dbFac->refresh(0);
+                                $dbFac->redirect("ModePage.php");
                             }
 
                             if ($valueTwo["ModeStatus"] == 1) {
                                 $dbFac->changeStatusToInactive($valueTwo["ModeID"]);
-                                $dbFac->refresh(0);
+                                $dbFac->redirect("ModePage.php");
                             }
                         }
                     }

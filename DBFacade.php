@@ -375,11 +375,6 @@ class DBFacade
         }
     }
 
-    function refresh( $time ){
-        $current_url = $_SERVER[ 'REQUEST_URI' ];
-        return header( "Refresh: " . $time . "; URL=$current_url" );
-    }
-
     public function displayCustomer()
     {
         $customerList = array();
