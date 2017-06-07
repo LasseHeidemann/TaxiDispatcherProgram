@@ -75,8 +75,10 @@ class DBFacade
 
             if($result){
                 echo 'Taxi was updated';
+                return true;
             }else{
                 echo 'There was an error while updating the Taxi';
+                return false;
             }
         }catch(PDOException $e){
             echo $e->getMessage();
@@ -87,7 +89,7 @@ class DBFacade
         try{
             $stmt = $this->db->prepare("UPDATE Taxi
                                         Set Available = 1
-                                        WHERE taxiID=:taxiID");
+                                        WHERE TaxiID=:taxiID");
             if($stmt->execute(array(':taxiID'=>$taxiID))){
                 return true;
             }else{
@@ -103,7 +105,7 @@ class DBFacade
             $stmt = $this->db->prepare("UPDATE Taxi
                                         Set Available = 0
                                         WHERE TaxiID=:taxiID");
-            if($stmt->execute(array(':modeID'=>$taxiID))){
+            if($stmt->execute(array(':taxiID'=>$taxiID))){
                 return true;
             }else{
                 return false;
@@ -168,11 +170,26 @@ class DBFacade
     }
 
     public function setMatchedOrderToCompleted($matchedOrderID){
-        try{
-            $stmt = $this->db->prepare("UPDATE MatchedOrder
+    try{
+        $stmt = $this->db->prepare("UPDATE MatchedOrder
                                         Set MatchedOrderStatus = 1
                                         WHERE MatchedID=:matchedOrderID");
-            if($stmt->execute(array(':matchedOrderID'=>$matchedOrderID))){
+        if($stmt->execute(array(':matchedOrderID'=>$matchedOrderID))){
+            return true;
+        }else{
+            return false;
+        }
+    }catch(PDOException $e){
+        echo $e->getMessage();
+    }
+}
+
+    public function setOrderToCompleted($orderID){
+        try{
+            $stmt = $this->db->prepare("UPDATE OrderTable
+                                        Set OrderStatus = 1
+                                        WHERE OrderID=:orderID");
+            if($stmt->execute(array(':orderID'=>$orderID))){
                 return true;
             }else{
                 return false;
@@ -238,22 +255,15 @@ class DBFacade
 
     public function displaySelectedTaxi($taxiID)
     {
-        $taxiSelectedList = array();
-
         try {
             $stmt = $this->db->prepare("SELECT * 
                                         FROM Taxi
                                         WHERE TaxiID=:taxiID");
+            $stmt->bindParam(':taxiID', $taxiID);
             $stmt->execute();
 
-            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if ($stmt->rowCount() > 0) {
-                foreach ($row as $taxi) {
-                    array_push($taxiSelectedList, $taxiID);
-                }
-                return $taxiSelectedList;
-
-            }
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $row;
 
         } catch (PDOException $e) {
             echo $e->getMessage();

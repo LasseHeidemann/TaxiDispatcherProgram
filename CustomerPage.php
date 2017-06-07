@@ -74,19 +74,18 @@ include "DBConnect.php";
                         echo'<td><form action="" method="post"> <button name = setRepPositiv value = "'.$valueTwo["CustomerID"].'"> + Reputation</button> </form></td>';
                         echo'<td><form action="" method="post"> <button name = setRepNegativ value = "'.$valueTwo["CustomerID"].'"> - Reputation</button> </form></td>';
 
-                        if(isset($_POST['setRepPositiv'])) {
-                            $dbFac->setCustomerReputationPositiv($valueTwo["CustomerID"]);
-                            $dbFac->refresh(0);
-                        }
-
-                        if(isset($_POST['setRepNeagtiv'])) {
-                            $dbFac->setCustomerReputationNegative($valueTwo["CustomerID"]);
-                            $dbFac->refresh(0);
-                        }
-
-
                     }
                 };
+
+                if(isset($_POST['setRepPositiv'])) {
+                    $dbFac->setCustomerReputationPositiv($_POST['setRepPositiv']);
+                    $dbFac->refresh(0);
+                }
+
+                if(isset($_POST['setRepNegativ'])) {
+                    $dbFac->setCustomerReputationNegative($_POST['setRepNegativ']);
+                    $dbFac->refresh(0);
+                }
 
                 ?>
                 </tbody>
