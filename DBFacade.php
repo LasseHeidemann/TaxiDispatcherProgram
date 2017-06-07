@@ -63,9 +63,9 @@ class DBFacade
      */
     public function editTaxi($carName, $carBrand, $carSeats, $licensePlate, $taxiID){
         try{
-            $stmt = $this->db->prepare("UPDATE taxi 
-                                        SET :carName, :carBrand, :carSeats, :licensePlate
-                                        WHERE :taxiID");
+            $stmt = $this->db->prepare("UPDATE Taxi 
+                                        SET CarName=:carName, Carbrand=:carBrand, CarSeats=:carSeats, LicensePlate=:licensePlate
+                                        WHERE TaxiID =:taxiID");
             $stmt->bindParam(':carName', htmlspecialchars($carName), PDO::PARAM_STR);
             $stmt->bindParam(':carBrand', htmlspecialchars($carBrand), PDO::PARAM_STR);
             $stmt->bindParam(':carSeats', $carSeats, PDO::PARAM_INT);
@@ -182,6 +182,36 @@ class DBFacade
         }
     }
 
+    public function setCustomerReputationPositiv($customerID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Customer
+                                        Set Reputation = Reputation + 1
+                                        WHERE CustomerID=:customerID");
+            if($stmt->execute(array(':customerID'=>$customerID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function setCustomerReputationNegative($customerID){
+        try{
+            $stmt = $this->db->prepare("UPDATE Customer
+                                        Set Reputation = Reputation - 1
+                                        WHERE CustomerID=:customerID");
+            if($stmt->execute(array(':customerID'=>$customerID))){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
     public function displayTaxi()
 {
     $taxiList = array();
@@ -205,6 +235,32 @@ class DBFacade
         echo $e->getMessage();
     }
 }
+
+    public function displaySelectedTaxi($taxiID)
+    {
+        $taxiSelectedList = array();
+
+        try {
+            $stmt = $this->db->prepare("SELECT * 
+                                        FROM Taxi
+                                        WHERE TaxiID=:taxiID");
+            $stmt->execute();
+
+            $row[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0) {
+                foreach ($row as $taxi) {
+                    array_push($taxiSelectedList, $taxiID);
+                }
+                return $taxiSelectedList;
+
+            }
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
 
     public function displayOrder()
     {
@@ -254,6 +310,63 @@ class DBFacade
         }
     }
 
+    function getCustomerIDfromOrder($orderID)
+    {
+        $customerID = null;
+        try
+        {
+            $stmt = $this->db->prepare("SELECT CustomerID
+                                    FROM OrderTable
+                                    WHERE OrderID=:orderID");
+            $stmt->bindParam(':orderID', $orderID);
+            $stmt->execute();
+            $id = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0)
+            {
+                $customerID = $id['CustomerID'];
+                return $customerID;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    function getCustomerEmail($customerID)
+    {
+        $email = null;
+        try
+        {
+            $stmt = $this->db->prepare("SELECT Email
+                                    FROM Customer
+                                    WHERE CustomerID=:customerID");
+            $stmt->bindParam(':customerID', $customerID);
+            $stmt->execute();
+            $email = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0)
+            {
+                $CustomerEmail = $email['Email'];
+                return $CustomerEmail;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
     function refresh( $time ){
         $current_url = $_SERVER[ 'REQUEST_URI' ];
         return header( "Refresh: " . $time . "; URL=$current_url" );
@@ -294,6 +407,24 @@ class DBFacade
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':mobileNumber', $mobileNumber);
             $stmt->bindParam(':password', $password);
+            if($stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function createMatchedOrder($orderID, $taxiID)
+    {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO MatchedOrder(OrderID, TaxiID) 
+                                            VALUES(:orderID,:taxiID)");
+
+            $stmt->bindParam(':orderID', $orderID);
+            $stmt->bindParam(':taxiID', $taxiID);
             if($stmt->execute()){
                 return true;
             }else{

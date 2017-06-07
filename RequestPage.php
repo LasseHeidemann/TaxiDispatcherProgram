@@ -27,7 +27,7 @@ include "DBConnect.php";
             <li><a href= "RequestPage.php">Requests</a></li>
             <li><a href= "BookingsPage.php">Bookings</a></li>
             <li><a href= "TaxiPage.php">Taxis</a></li>
-            <li><a href= "ModePage.php">Shared Mode</a></li>
+            <li><a href= "ModePage.php">Mode</a></li>
             <li><a href= "CustomerPage.php">Customer</a></li>
         </ul>
     </nav>
@@ -90,31 +90,41 @@ include "DBConnect.php";
                             echo '<td style = "background-color: #008000"></td>';
                         }
 
-                        echo "<td><select id='selectedTaxi' name = 'selectedTaxi'>";
+                        echo "<td><form action='#' method='post'><select name = 'selected_Taxi'>";
 
                         $taxis = $dbFac->displayTaxi();
                         foreach ($taxis as $taxi => $value) {
                             foreach ($value as $subvalue => $valueTwo) {
 
+
                                 if($valueTwo["Available"] == 1){
-                                    echo '<option value=' . $valueTwo["TaxiID"] . '>Taxi: ' . $valueTwo["TaxiID"] . ',  ' . $valueTwo["CarName"] . ', Seats: ' . $valueTwo["CarSeats"] . ' </option>';
+                                    echo '<option value=' . $valueTwo["TaxiID"] . '>Taxi: ' . $valueTwo["TaxiID"] . ',  ' . $valueTwo["CarName"] . ', Seats: ' . $valueTwo["CarSeats"] . '</option>';
                                 }
                             }
                         }
                         echo '</select></td>';
 
-                        echo '<td><input type = button name = submit a href="UpdateTaxi.php" value = GO! </td>';
+                        echo '<td><form action="" method="post"><button name = submit> GO! </button></form></td></form>';
 
-                            if($_POST['submit'] && $_POST['submit'] != 0)
-                            {
-                                $selectedTaxi=$_POST['selectedTaxi'];
+                        if(isset($_POST['submit'])){
+                            $selectedTaxi = $_POST['selected_Taxi'];
 
-                                echo $selectedTaxi;
+                            $receiver = $dbFac->getCustomerEmail(["CustomerID"]);
+                            $topic = "Information about your requested Taxi";
+                            $from = "From: Unter Taxi <untertaxi@gmail.com>";
+                            $text = "Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company";
+
+                            if($dbFac->createMatchedOrder($_POST['orderID'], $selectedTaxi)){
+                                mail($receiver, $topic, $text, $from);
+                                $dbFac->redirect("BookingsPage.php");
+
+                            }else{
+                                echo "ERROR";
                             }
+                        }
 
                         echo '</tr>';
                         }
-
                     }
                 }
 
@@ -131,7 +141,7 @@ include "DBConnect.php";
 </div>
 
 <footer>
-    <p> Welcome to our Taxi Company </p>
+    <p> Welcome to our Unter Taxi Company </p>
 </footer>
 
 </body>

@@ -28,7 +28,7 @@ include "DBConnect.php";
             <li><a href= "RequestPage.php">Requests</a></li>
             <li><a href= "BookingsPage.php">Bookings</a></li>
             <li><a href= "TaxiPage.php">Taxis</a></li>
-            <li><a href= "ModePage.php">Shared Mode</a></li>
+            <li><a href= "ModePage.php">Mode</a></li>
             <li><a href= "CustomerPage.php">Customer</a></li>
         </ul>
     </nav>
@@ -64,23 +64,21 @@ include "DBConnect.php";
                 echo '<td>' . $valueTwo["CarBrand"] . '</td>';
                 echo '<td>' . $valueTwo["CarSeats"] . '</td>';
                 echo '<td>' . $valueTwo["LicensePlate"] . '</td>';
-                echo '<td><form action="" method="post"><button name = update value = "' . $valueTwo["TaxiID"] . '"> Update</button></form></td>';
-                echo '<td><form action="" method="post"><button name = delete value = "' . $valueTwo["TaxiID"] . '"> Delete</button> </form></td>';
+                echo '<td><form action="UpdateTaxi.php?id=' . $valueTwo["TaxiID"] . '" method="post"><button name = update value = "' . $valueTwo["TaxiID"] . '"> Update</button></form></td>';
+
+                echo '<td><form action="" method="post"><button name = delete value = "' . $valueTwo["TaxiID"] . '"> Delete</button></form></td>';
                 echo '</tr>';
 
-                if (isset($_POST['update'])) {
-                    $dbFac->redirect("RequestPage.php");
-                }
-
-                if (isset($_POST['delete'])) {
-                    if ($dbFac->deleteTaxi($_POST['delete'])) {
+                    if (isset($_POST['delete'])) {
+                    if ($dbFac->deleteTaxi($_POST['delete']))
                         $dbFac->refresh(0);
                     } else {
 
                     }
                 };
             }
-        }
+
+
 
         ?>
             </tbody>
@@ -96,7 +94,7 @@ include "DBConnect.php";
     </div>
 
     <footer>
-        <p> Welcome to our Taxi Company </p>
+        <p> Welcome to our Unter Taxi Company </p>
     </footer>
 
 </body>
