@@ -420,6 +420,25 @@ class DBFacade
         }
     }
 
+    public function sendEmailWithMailer($receiver){
+        require("class.phpmailer.php");
+        $mail = new phpmailer();
+        $mail->IsSMTP();
+        $mail->Host     = "smtp.gmail.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "Untertaxi@gmail.com";
+        $mail->Password = "Nila1234";
+
+        $mail->From     = "Untertaxi@gmail.com";
+        $mail->FromName = "Unter Taxi Company";
+        $mail->AddAddress($receiver);
+        $mail->WordWrap = 50;
+        $mail->IsHTML(true);
+        $mail->Body     =  "Hello, your Taxi will arrive within the next 20 minutes. Thank you for your order. Your Unter Taxi Company.";
+    }
+
+
+
     public function createMatchedOrder($orderID, $taxiID)
     {
         try {
