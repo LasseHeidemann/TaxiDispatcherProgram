@@ -361,21 +361,19 @@ class DBFacade
             $email = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($stmt->rowCount() > 0)
             {
-                $CustomerEmail = $email['Email'];
-                return $CustomerEmail;
+                $customerEmail = $email['Email'];
+                return $customerEmail;
             }
             else
             {
                 return false;
             }
         }
-
         catch(PDOException $e)
         {
             echo $e->getMessage();
         }
     }
-
 
     function refresh( $time ){
         $current_url = $_SERVER[ 'REQUEST_URI' ];
