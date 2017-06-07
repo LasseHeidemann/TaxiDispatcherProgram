@@ -130,15 +130,17 @@ include "DBConnect.php";
                         $mail->WordWrap = 50;
                         $mail->IsHTML(true);
                         $mail->Body     =  "Hello, your Taxi will arrive within the next 20 minutes. Thank you for your order. Your Unter Taxi Company.";
-                        if(!$mail->Send())
-                        {echo "Die Nachricht konnte nicht versandt werden <p>";
-                            echo "Mailer Error: " . $mail->ErrorInfo;
-                            exit;}
 
                         if ($dbFac->createMatchedOrder($_POST['submit'], $selectedTaxi)) {
                             $dbFac->setTaxiBusy($selectedTaxi);
                             $dbFac->setOrderToCompleted($_POST['submit']);
                             $dbFac->redirect("BookingsPage.php");
+
+                            if(!$mail->Send())
+                            {echo "Die Nachricht konnte nicht versandt werden <p>";
+                                echo "Mailer Error: " . $mail->ErrorInfo;
+                                exit;}
+
 
                         } else {
                             echo "ERROR";
