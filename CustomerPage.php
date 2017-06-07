@@ -62,14 +62,13 @@ include "DBConnect.php";
                         echo            '<td>'.$valueTwo["LastName"].'</td>';
                         echo            '<td>'.$valueTwo["Email"].'</td>';
                         echo            '<td>'.$valueTwo["MobileNumber"].'</td>';
-                        echo            '<td>'.$valueTwo["Reputation"].'</td>';
 
                         if ($valueTwo["Reputation"] >= 0 ) {
-                            echo '<td style = "background-color: #008000"></td>';
+                            echo '<td style = "background-color: #008000"> '.$valueTwo["Reputation"].'</td>';
                         }
 
                         if ($valueTwo["Reputation"] < 0 ) {
-                            echo '<td style = "background-color: #FF0000"></td>';
+                            echo '<td style = "background-color: #FF0000">'.$valueTwo["Reputation"].'</td>';
                         }
 
                         echo'<td><form action="" method="post"> <button name = setRepPositiv value = "'.$valueTwo["CustomerID"].'"> + Reputation</button> </form></td>';
@@ -101,7 +100,7 @@ include "DBConnect.php";
 </div>
 
 <footer>
-    <p> Welcome to our Taxi Company </p>
+    <p> Welcome to our Unter Taxi Company </p>
 </footer>
 
 </body>

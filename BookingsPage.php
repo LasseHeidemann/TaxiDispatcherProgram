@@ -46,7 +46,7 @@ include "DBConnect.php";
                 <th><b>Booking ID</b></th>
                 <th><b>Order ID</b></th>
                 <th><b>Taxi ID</b></th>
-
+                <th><b>Canceled</b></th>
 
                 </thead>
                 <tbody>
@@ -63,16 +63,37 @@ include "DBConnect.php";
                         echo            '<td>'.$valueTwo["MatchedID"].'</td>';
                         echo            '<td>'.$valueTwo["OrderID"].'</td>';
                         echo            '<td>'.$valueTwo["TaxiID"].'</td>';
-                        echo            '<td><form action="" method="post"><button name = complete value = "'.$valueTwo["MatchedID"].'"> Completed</button> </form></td>';
 
-                        if(isset($_POST['complete'])) {
-                            $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
-                            $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
-                            $dbFac->refresh(0);
-                        }
+                            if ($valueTwo["IsCanceled"] == 0) {
+                                echo '<td style = "background-color: #FFFFFF"></td>';
+
+                                echo'<td><form action="" method="post"><button name = complete value = "'.$valueTwo["MatchedID"].'"> Completed</button> </form></td>';
+
+                                if(isset($_POST['complete'])) {
+                                    $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
+                                    $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
+                                    $dbFac->setCustomerReputationPositiv($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"]));
+                                    $dbFac->refresh(0);
+                                }
+                            }
+
+                            if ($valueTwo["IsCanceled"] == 1) {
+                                echo '<td style = "background-color: #FF0000"></td>';
+
+                                echo'<td><form action="" method="post"><button name = confirm value = "'.$valueTwo["MatchedID"].'"> Confirm</button> </form></td>';
+
+                                if(isset($_POST['confirm'])) {
+                                    $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
+                                    $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
+                                    $dbFac->setCustomerReputationNegative($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"]));
+                                    $dbFac->refresh(0);
+                                }
+
+                            }
+
                         echo '</tr>';
+                        }
                     }
-                }
                 }
                 ?>
                 </tbody>
@@ -86,7 +107,7 @@ include "DBConnect.php";
 </div>
 
 <footer>
-    <p> Welcome to our Taxi Company </p>
+    <p> Welcome to our Unter Taxi Company </p>
 </footer>
 
 </body>
