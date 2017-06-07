@@ -116,16 +116,31 @@ include "DBConnect.php";
                         $customerID = $dbFac->getCustomerIDfromOrder($_POST['submit']);
                         $receiverMail = $dbFac->getCustomerEmail($customerID);
 
-                        $receiver = $receiverMail;
-                        $topic = 'Information about your requested Taxi';
-                        $from = 'From: Unter Taxi <untertaxi@gmail.com>';
-                        $text = 'Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company';
+                        require("class.phpmailer.php");
+                        $mail = new phpmailer();
+                        $mail->IsSMTP();
+                        $mail->Host     = "smtp.gmail.com";
+                        $mail->SMTPAuth = true;
+                        $mail->Username = "Untertaxi@gmail.com";
+                        $mail->Password = "NiLa1234";
+
+                        $mail->From     = "Untertaxi@gmail.com";
+                        $mail->FromName = "Unter Taxi Company";
+                        $mail->AddAddress($receiverMail);
+                        $mail->WordWrap = 50;
+                        $mail->IsHTML(true);
+                        $mail->Body     =  "Hello, your Taxi will arrive within the next 20 minutes. Thank you for your order. Your Unter Taxi Company.";
 
                         if ($dbFac->createMatchedOrder($_POST['submit'], $selectedTaxi)) {
                             $dbFac->setTaxiBusy($selectedTaxi);
                             $dbFac->setOrderToCompleted($_POST['submit']);
-                            mail($receiver, $topic, $text, $from);
                             $dbFac->redirect("BookingsPage.php");
+
+                            if(!$mail->Send())
+                            {echo "Die Nachricht konnte nicht versandt werden <p>";
+                                echo "Mailer Error: " . $mail->ErrorInfo;
+                                exit;}
+
 
                         } else {
                             echo "ERROR";
