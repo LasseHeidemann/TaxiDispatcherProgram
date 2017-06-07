@@ -85,14 +85,14 @@ include "DBConnect.php";
                     $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
                     $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
                     $dbFac->setCustomerReputationPositiv($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"]));
-                    $dbFac->refresh(0);
+                    $dbFac->redirect("BookingsPage.php");
                 }
 
                 if(isset($_POST['confirm'])) {
                     $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
                     $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
                     $dbFac->setCustomerReputationNegative($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"]));
-                    $dbFac->refresh(0);
+                    $dbFac->redirect("BookingsPage.php");
                 }
 
 
