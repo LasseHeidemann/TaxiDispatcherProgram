@@ -375,6 +375,58 @@ class DBFacade
         }
     }
 
+    function getHighestCustomerID()
+    {
+        try
+        {
+            $stmt = $this->db->prepare("SELECT CustomerID
+                                    FROM Customer
+                                    ORDER BY CustomerID DESC
+                                    LIMIT 1");
+            $stmt->execute();
+            $customerID = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0)
+            {
+                return $customerID;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    function getHighestOrderID()
+    {
+        try
+        {
+            $stmt = $this->db->prepare("SELECT OrderID
+                                    FROM OrderTable
+                                    ORDER BY OrderID DESC
+                                    LIMIT 1");
+            $stmt->execute();
+            $orderID = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() > 0)
+            {
+                return $orderID;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
     public function displayCustomer()
     {
         $customerList = array();
@@ -421,20 +473,30 @@ class DBFacade
     }
 
     public function sendEmailWithMailer($receiver){
-        require("class.phpmailer.php");
-        $mail = new phpmailer();
+        require("PHPMailer/PHPMailerAutoload.php");
+        $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Host     = "smtp.gmail.com";
         $mail->SMTPAuth = true;
         $mail->Username = "Untertaxi@gmail.com";
         $mail->Password = "Nila1234";
+        $mail->SMTPSecure = "ssl";
+        $mail->Port = 465;
 
         $mail->From     = "Untertaxi@gmail.com";
         $mail->FromName = "Unter Taxi Company";
         $mail->AddAddress($receiver);
         $mail->WordWrap = 50;
         $mail->IsHTML(true);
+        $mail->Subject  = "Information about your requested Taxi.";
         $mail->Body     =  "Hello, your Taxi will arrive within the next 20 minutes. Thank you for your order. Your Unter Taxi Company.";
+
+        if($mail->send())
+        {
+            echo "Mail sent";
+        } else {
+            echo $mail->ErrorInfo;
+        }
     }
 
 
@@ -476,6 +538,37 @@ class DBFacade
             }else{
                 return false;
             }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function cancelOrder($orderID){
+        try{
+            $stmt = $this->db->prepare("DELETE FROM OrderTable
+                                        WHERE OrderID=:orderID");
+            if($stmt->execute(array(':orderID'=>$orderID))){
+                return true;
+            }else{
+                return false;
+            }
+
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function cancelMatchedOrder($orderID){
+        try{
+            $stmt = $this->db->prepare("UPDATE MatchedOrder
+                                        SET IsCanceled = 1
+                                        WHERE OrderID=:orderID AND MatchedOrderStatus=0 AND IsCanceled=0");
+            if($stmt->execute(array(':orderID'=>$orderID))){
+                return true;
+            }else{
+                return false;
+            }
+
         }catch(PDOException $e){
             echo $e->getMessage();
         }
