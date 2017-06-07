@@ -114,10 +114,12 @@ include "DBConnect.php";
                         $selectedTaxi = $_POST['selected_Taxi'];
 
                         $customerID = $dbFac->getCustomerIDfromOrder($_POST['submit']);
-                        $receiver = $dbFac->getCustomerEmail($customerID);
-                        $topic = "Information about your requested Taxi";
-                        $from = "From: Unter Taxi <untertaxi@gmail.com>";
-                        $text = "Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company";
+                        $receiverMail = $dbFac->getCustomerEmail($customerID);
+
+                        $receiver = $receiverMail;
+                        $topic = 'Information about your requested Taxi';
+                        $from = 'From: Unter Taxi <untertaxi@gmail.com>';
+                        $text = 'Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company';
 
                         if ($dbFac->createMatchedOrder($_POST['submit'], $selectedTaxi)) {
                             $dbFac->setTaxiBusy($selectedTaxi);
