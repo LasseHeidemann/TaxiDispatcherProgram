@@ -13,6 +13,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         isset($_POST['SharedTaxi']) && isset($_POST['Persons'])&& isset($_POST['Childseats'])&& isset($_POST['Handicapped'])
 
     ) {
+
         //Get the POST variables
         $customerID = $_POST['CustomerID'];
         $location = $_POST['Location'];
