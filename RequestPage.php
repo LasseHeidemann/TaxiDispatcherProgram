@@ -9,6 +9,7 @@ include "DBConnect.php";
 
 ?>
 
+
 <html>
 <head>
 
@@ -51,7 +52,6 @@ include "DBConnect.php";
                 <th>Handicapped</th>
                 <th>Select Taxi</th>
 
-
                 </thead>
                 <tbody>
 
@@ -62,68 +62,70 @@ include "DBConnect.php";
                 foreach ($orders as $order => $value) {
                     foreach ($value as $subvalue => $valueTwo) {
 
-                        if($valueTwo["OrderStatus"] == 0){
+                        if($valueTwo["OrderStatus"] == 0) {
 
-                        echo '<tr>';
-                        echo '<td>' . $valueTwo["OrderID"] . '</td>';
-                        echo '<td>' . $valueTwo["CustomerID"] . '</td>';
-                        echo '<td>' . $valueTwo["Location"] . '</td>';
-                        echo '<td>' . $valueTwo["Destination"] . '</td>';
-                        echo '<td>' . $valueTwo["Time"] . '</td>';
+                            echo '<tr>';
+                            echo '<td>' . $valueTwo["OrderID"] . '</td>';
+                            echo '<td>' . $valueTwo["CustomerID"] . '</td>';
+                            echo '<td>' . $valueTwo["Location"] . '</td>';
+                            echo '<td>' . $valueTwo["Destination"] . '</td>';
+                            echo '<td>' . $valueTwo["Time"] . '</td>';
 
-                        if ($valueTwo["SharedTaxi"] == 0) {
-                            echo '<td style = "background-color: #FFFFFF"></td>';
-                        }
+                            if ($valueTwo["SharedTaxi"] == 0) {
+                                echo '<td style = "background-color: #FFFFFF"></td>';
+                            }
 
-                        if ($valueTwo["SharedTaxi"] == 1) {
-                            echo '<td style = "background-color: #008000"></td>';
-                        }
+                            if ($valueTwo["SharedTaxi"] == 1) {
+                                echo '<td style = "background-color: #008000"></td>';
+                            }
 
-                        echo '<td>' . $valueTwo["Persons"] . '</td>';
-                        echo '<td>' . $valueTwo["ChildSeats"] . '</td>';
+                            echo '<td>' . $valueTwo["Persons"] . '</td>';
+                            echo '<td>' . $valueTwo["ChildSeats"] . '</td>';
 
-                        if ($valueTwo["Handicapped"] == 0) {
-                            echo '<td style = "background-color: #FFFFFF"></td>';
-                        }
+                            if ($valueTwo["Handicapped"] == 0) {
+                                echo '<td style = "background-color: #FFFFFF"></td>';
+                            }
 
-                        if ($valueTwo["Handicapped"] == 1) {
-                            echo '<td style = "background-color: #008000"></td>';
-                        }
+                            if ($valueTwo["Handicapped"] == 1) {
+                                echo '<td style = "background-color: #008000"></td>';
+                            }
 
-                        echo "<td><form action='#' method='post'><select name = 'selected_Taxi'>";
+                            echo "<td><form action='#' method='post'><select name = 'selected_Taxi'>";
 
-                        $taxis = $dbFac->displayTaxi();
-                        foreach ($taxis as $taxi => $value) {
-                            foreach ($value as $subvalue => $valueTwo) {
+                            $taxis = $dbFac->displayTaxi();
+                            foreach ($taxis as $taxi => $value) {
+                                foreach ($value as $subvalue => $valueTwoTaxi) {
 
-
-                                if($valueTwo["Available"] == 1){
-                                    echo '<option value=' . $valueTwo["TaxiID"] . '>Taxi: ' . $valueTwo["TaxiID"] . ',  ' . $valueTwo["CarName"] . ', Seats: ' . $valueTwo["CarSeats"] . '</option>';
+                                    if ($valueTwoTaxi["Available"] == 1) {
+                                        echo '<option value=' . $valueTwoTaxi["TaxiID"] . '>Taxi: ' . $valueTwoTaxi["TaxiID"] . ',  ' . $valueTwoTaxi["CarName"] . ', Seats: ' . $valueTwoTaxi["CarSeats"] . '</option>';
+                                    }
                                 }
                             }
+
+                            echo '</select></td>';
+
+                            echo '<td><form action="" method="post"><button name = submit value = "' . $valueTwo["OrderID"] . '"> GO! </button></form></td></form>';
+
+                            echo '</tr>';
                         }
-                        echo '</select></td>';
+                    }
 
-                        echo '<td><form action="" method="post"><button name = submit> GO! </button></form></td></form>';
+                    if (isset($_POST['submit'])) {
+                        $selectedTaxi = $_POST['selected_Taxi'];
 
-                        if(isset($_POST['submit'])){
-                            $selectedTaxi = $_POST['selected_Taxi'];
+                        $receiver = $dbFac->getCustomerEmail(["CustomerID"]);
+                        $topic = "Information about your requested Taxi";
+                        $from = "From: Unter Taxi <untertaxi@gmail.com>";
+                        $text = "Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company";
 
-                            $receiver = $dbFac->getCustomerEmail(["CustomerID"]);
-                            $topic = "Information about your requested Taxi";
-                            $from = "From: Unter Taxi <untertaxi@gmail.com>";
-                            $text = "Hello, your Taxi will arrive within the next 20 mintues. Thank you for your order. Your Unter Taxi Company";
+                        if ($dbFac->createMatchedOrder($_POST['submit'], $selectedTaxi)) {
+                            $dbFac->setTaxiBusy($selectedTaxi);
+                            $dbFac->setOrderToCompleted($_POST['submit']);
+                            mail($receiver, $topic, $text, $from);
+                            $dbFac->redirect("BookingsPage.php");
 
-                            if($dbFac->createMatchedOrder($_POST['orderID'], $selectedTaxi)){
-                                mail($receiver, $topic, $text, $from);
-                                $dbFac->redirect("BookingsPage.php");
-
-                            }else{
-                                echo "ERROR";
-                            }
-                        }
-
-                        echo '</tr>';
+                        } else {
+                            echo "ERROR";
                         }
                     }
                 }

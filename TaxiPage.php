@@ -64,6 +64,7 @@ include "DBConnect.php";
                 echo '<td>' . $valueTwo["CarBrand"] . '</td>';
                 echo '<td>' . $valueTwo["CarSeats"] . '</td>';
                 echo '<td>' . $valueTwo["LicensePlate"] . '</td>';
+
                 echo '<td><form action="UpdateTaxi.php?id=' . $valueTwo["TaxiID"] . '" method="post"><button name = update value = "' . $valueTwo["TaxiID"] . '"> Update</button></form></td>';
 
                 echo '<td><form action="" method="post"><button name = delete value = "' . $valueTwo["TaxiID"] . '"> Delete</button></form></td>';
