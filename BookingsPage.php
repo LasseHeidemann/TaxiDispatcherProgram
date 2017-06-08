@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Created by PhpStorm.
@@ -8,23 +7,35 @@
  */
 include "DBConnect.php";
 
-?>
+/**
+ * The BookingsPage.php is for the MatchedOrders, which are Orders/Requests with a assigned Taxi.
+ * The Page will show all the MatchedOrders which are activ, but also the ones who got canceled by a Customer throw the APP.
+ * @param MatchedOrderID - The ID of the MatchedOrder
+ * @param OrderID - The Order ID
+ * @param TaxiID - The ID of the assigned Taxi to the MatchedOrder
+ * @param Canceled - Shows if the Order got canceled by the Customer throw the APP
+ */
 
+?>
 
 <html>
 <head>
 
     <title> Bookings </title>
+
+    //Importing the created Stylesheet.css
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
 
 <body>
 
+//Adding the banner to the Page
 <div id = "wrapper">
     <div id = "banner">
     </div>
 
+    //Adding the navigation to the Page, with the hrefs to the other Pages
     <nav id = "navigation">
         <ul id = "nav">
             <li><a href= "RequestPage.php">Requests</a></li>
@@ -36,10 +47,11 @@ include "DBConnect.php";
     </nav>
 
     <pos>
-        <div id = "conecnt_area">
+        //Here is the content, which shows all the MatchedOder on the Page
+        <div id = "content_area">
 
             <br>
-
+            //Create the Table for the MatchedOrders
             <table class = 'overviewTable'
             <table border=1 cellspacing=1 cellpadding=2 align="center">
                 <thead></thead>
@@ -52,56 +64,63 @@ include "DBConnect.php";
                 <tbody>
 
                 <?php
-
+                //Displaying all the MatchedOrders, where the OrderStatus is = 0, so that it shows all the not completed MatchedOrders and also the canceled Orders from the Customer
                 $matchedOrders = $dbFac->displayMatchedOrders();
+
+                //Looping throw all the MatchedOrders which a OrderStatus = 0
                 foreach ($matchedOrders as $matchedOrders => $value){
                     foreach ($value as $subvalue => $valueTwo){
 
-                        if($valueTwo["MatchedOrderStatus"] == 0){
-
+                        //Adding the Data to the Table
                         echo '<tr>';
-                        echo            '<td>'.$valueTwo["MatchedID"].'</td>';
-                        echo            '<td>'.$valueTwo["OrderID"].'</td>';
-                        echo            '<td>'.$valueTwo["TaxiID"].'</td>';
+                        echo '<td>'.$valueTwo["MatchedID"].'</td>';
+                        echo '<td>'.$valueTwo["OrderID"].'</td>';
+                        echo '<td>'.$valueTwo["TaxiID"].'</td>';
 
+                            //If statement for the Button. When the Order is not canceled, then the Dispatcher can complete the Order with the Button
                             if ($valueTwo["IsCanceled"] == 0) {
+
+                                //Adding a white background if the Order is not canceled
                                 echo '<td style = "background-color: #FFFFFF"></td>';
 
+                                //Adding the Button to the Page, which completes an finished Order, so the Customer has arrived his destination
                                 echo'<td><form action="" method="post"><button name = complete value = "'.$valueTwo["MatchedID"].'"> Completed</button> </form></td>';
                             }
 
+                            //If statement for the Button. When the Order is canceled, then the Dispatcher should confirm, that he noticed, that the Order was deleted
                             if ($valueTwo["IsCanceled"] == 1) {
+
+                                //Adding a red background if the Order is canceled
                                 echo '<td style = "background-color: #FF0000"></td>';
 
+                                //Adding the Button to the Page, which confirms, that the Dispatcher has seen the canceled Order
                                 echo'<td><form action="" method="post"><button name = confirm value = "'.$valueTwo["MatchedID"].'"> Confirm</button> </form></td>';
                             }
 
                         echo '</tr>';
                         }
-                    }
-                }
 
+                }
+                //Button action to complete an MatchedOrder, which means, that the Customer has arrived his destination
                 if(isset($_POST['complete'])) {
-                    $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
-                    $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
-                    $dbFac->setCustomerReputationPositiv($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"]));
-                    $dbFac->redirect("BookingsPage.php");
-                }
 
+                    $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]); // Set the MatchedOrderStatus again to "1"
+                    $dbFac->setTaxiAvailable($valueTwo["TaxiID"]); // Set Available in the Taxi Table again to "1"
+                    $dbFac->setCustomerReputationPositiv($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"])); // Set the Customer Reputation +1
+                    $dbFac->redirect("BookingsPage.php"); // Go to BookingPage.php
+                }
+                //Button action to confrim an MatchedOrder, which means, that the Employee has seen, that the Order got canceled
                 if(isset($_POST['confirm'])) {
-                    $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]);
-                    $dbFac->setTaxiAvailable($valueTwo["TaxiID"]);
-                    $dbFac->setCustomerReputationNegative($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"]));
-                    $dbFac->redirect("BookingsPage.php");
+                    $dbFac->setMatchedOrderToCompleted($valueTwo["MatchedID"]); // Set the MatchedOrderStatus again to "1"
+                    $dbFac->setTaxiAvailable($valueTwo["TaxiID"]); // Set Available in the Taxi Table again to "1"
+                    $dbFac->setCustomerReputationNegative($dbFac->getCustomerIDfromOrder($valueTwo["OrderID"])); // Set the Customer Reputation -1
+                    $dbFac->redirect("BookingsPage.php"); // Go to BookingPage.php
                 }
-
 
                 ?>
                 </tbody>
             </table>
-
             <br>
-
         </div>
     </pos>
 

@@ -9,20 +9,24 @@ include "DBConnect.php";
 
 ?>
 
-
 <html>
-    <head>
+<head>
 
-<link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
+    <title> Bookings </title>
+
+    //Importing the created Stylesheet.css
+    <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
 
 <body>
 
+//Adding the banner to the Page
 <div id = "wrapper">
     <div id = "banner">
     </div>
 
+    //Adding the navigation to the Page, with the hrefs to the other Pages
     <nav id = "navigation">
         <ul id = "nav">
             <li><a href= "RequestPage.php">Requests</a></li>
@@ -34,10 +38,11 @@ include "DBConnect.php";
     </nav>
 
     <pos>
-    <div id = "conecnt_area">
+        //Here is the content, which shows all the MatchedOder on the Page
+        <div id = "content_area">
 
         <br>
-
+        //Creating the Taxi Table
         <table class = 'overviewTable'
         <table border=1 cellspacing=1 cellpadding=2 align="center">
         <thead></thead>
@@ -47,17 +52,16 @@ include "DBConnect.php";
         <th><b>Seats</b></th>
         <th><b>Licenseplate</b></th>
 
-
-
         </thead>
             <tbody>
 
         <?php
-
+        //Getting all the Taxis form the DB
         $taxis = $dbFac->displayTaxi();
+        //Looping throw all the taxis
         foreach ($taxis as $taxi => $value) {
             foreach ($value as $subvalue => $valueTwo) {
-
+                //Adding data to the table
                 echo '<tr>';
                 echo '<td>' . $valueTwo["TaxiID"] . '</td>';
                 echo '<td>' . $valueTwo["CarName"] . '</td>';
@@ -65,35 +69,33 @@ include "DBConnect.php";
                 echo '<td>' . $valueTwo["CarSeats"] . '</td>';
                 echo '<td>' . $valueTwo["LicensePlate"] . '</td>';
 
-                echo '<td><form action="UpdateTaxi.php?id=' . $valueTwo["TaxiID"] . '" method="post"><button name = update value = "' . $valueTwo["TaxiID"] . '"> Update</button></form></td>';
 
+                //create button with href and also posts the ID of the taxi to the next page
+                echo '<td><form action="UpdateTaxi.php?id=' . $valueTwo["TaxiID"] . '" method="post"><button name = update value = "' . $valueTwo["TaxiID"] . '"> Update</button></form></td>';
+                //create button
                 echo '<td><form action="" method="post"><button name = delete value = "' . $valueTwo["TaxiID"] . '"> Delete</button></form></td>';
                 echo '</tr>';
 
-                    if (isset($_POST['delete'])) {
-                    if ($dbFac->deleteTaxi($_POST['delete']))
-                        $dbFac->redirect("TaxiPage.php");
-                    } else {
-
-                    }
                 };
             }
 
-
+            if (isset($_POST['delete'])) {
+            if ($dbFac->deleteTaxi($_POST['delete']))//Delete Customer
+                $dbFac->redirect("TaxiPage.php");//redirect to the TaxiPage.php
+            } else {
+        }
 
         ?>
             </tbody>
         </table>
-
         <br>
-
+            //Adding a link to the CreateNewTaxiPage.php
         <a href="CreateNewTaxi.php"> Add a new Taxi</a><br/>
-
     </div>
     </pos>
 
     </div>
-
+//Adding the footer
     <footer>
         <p> Welcome to our Unter Taxi Company </p>
     </footer>
