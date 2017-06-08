@@ -12,17 +12,17 @@ include "DBConnect.php";
 
 <html>
 <head>
-
+    //Importing the created Stylesheet.css
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
 
 <body>
-
+//Adding the banner to the Page
 <div id = "wrapper">
     <div id = "banner">
     </div>
-
+    //Adding the navigation to the Page, with the hrefs to the other Pages
     <nav id = "navigation">
         <ul id = "nav">
             <li><a href= "RequestPage.php">Requests</a></li>
@@ -34,10 +34,10 @@ include "DBConnect.php";
     </nav>
 
     <pos>
-        <div id = "conecnt_area">
+        <div id = "content_area">
 
             <br>
-
+            //Create the Table for the Customers
             <table class = 'overviewTable'
             <table border=1 cellspacing=1 cellpadding=2 align="center">
                 <thead></thead>
@@ -51,11 +51,14 @@ include "DBConnect.php";
                 <tbody>
 
                 <?php
-
+                //Getting all the Customers from the function
                 $customer = $dbFac->displayCustomer();
+
+                //Looping throw all the Customers
                 foreach ($customer as $customer => $value){
                     foreach ($value as $subvalue => $valueTwo){
 
+                        //Adding values to the table
                         echo '<tr>';
                         echo            '<td>'.$valueTwo["CustomerID"].'</td>';
                         echo            '<td>'.$valueTwo["FirstName"].'</td>';
@@ -63,41 +66,40 @@ include "DBConnect.php";
                         echo            '<td>'.$valueTwo["Email"].'</td>';
                         echo            '<td>'.$valueTwo["MobileNumber"].'</td>';
 
+                        //Setting the color from the field to green, if the customer has a positiv Reputation
                         if ($valueTwo["Reputation"] >= 0 ) {
                             echo '<td style = "background-color: #008000"> '.$valueTwo["Reputation"].'</td>';
                         }
 
+                        //Setting the color from the field to red, if the customer has a negativ Reputation
                         if ($valueTwo["Reputation"] < 0 ) {
                             echo '<td style = "background-color: #FF0000">'.$valueTwo["Reputation"].'</td>';
                         }
-
+                        // Creating both buttons for + Rep and - Rep
                         echo'<td><form action="" method="post"> <button name = setRepPositiv value = "'.$valueTwo["CustomerID"].'"> + Reputation</button> </form></td>';
                         echo'<td><form action="" method="post"> <button name = setRepNegativ value = "'.$valueTwo["CustomerID"].'"> - Reputation</button> </form></td>';
 
                     }
                 };
-
+                // Button click
                 if(isset($_POST['setRepPositiv'])) {
-                    $dbFac->setCustomerReputationPositiv($_POST['setRepPositiv']);
-                    $dbFac->redirect("CustomerPage.php");
+                    $dbFac->setCustomerReputationPositiv($_POST['setRepPositiv']); // Set the Customer Reputation +1
+                    $dbFac->redirect("CustomerPage.php"); // Goes back to the CustomerPage.php
                 }
 
                 if(isset($_POST['setRepNegativ'])) {
-                    $dbFac->setCustomerReputationNegative($_POST['setRepNegativ']);
-                    $dbFac->redirect("CustomerPage.php");
+                    $dbFac->setCustomerReputationNegative($_POST['setRepNegativ']);// Set the Customer Reputation -1
+                    $dbFac->redirect("CustomerPage.php");// Goes back to the CustomerPage.php
                 }
 
                 ?>
                 </tbody>
             </table>
-
             <br>
-
         </div>
     </pos>
-
 </div>
-
+//Adding footer to the page
 <footer>
     <p> Welcome to our Unter Taxi Company </p>
 </footer>
