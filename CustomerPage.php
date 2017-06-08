@@ -12,17 +12,14 @@ include "DBConnect.php";
 
 <html>
 <head>
-    //Importing the created Stylesheet.css
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
 
 <body>
-//Adding the banner to the Page
 <div id = "wrapper">
     <div id = "banner">
     </div>
-    //Adding the navigation to the Page, with the hrefs to the other Pages
     <nav id = "navigation">
         <ul id = "nav">
             <li><a href= "RequestPage.php">Requests</a></li>
@@ -37,7 +34,6 @@ include "DBConnect.php";
         <div id = "content_area">
 
             <br>
-            //Create the Table for the Customers
             <table class = 'overviewTable'
             <table border=1 cellspacing=1 cellpadding=2 align="center">
                 <thead></thead>
@@ -99,7 +95,6 @@ include "DBConnect.php";
         </div>
     </pos>
 </div>
-//Adding footer to the page
 <footer>
     <p> Welcome to our Unter Taxi Company </p>
 </footer>

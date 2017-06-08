@@ -14,19 +14,16 @@ include "DBConnect.php";
 
     <title> Bookings </title>
 
-    //Importing the created Stylesheet.css
     <link rel= "stylesheet" type= "text/css" href="Styles/Stylesheet.css"
 
 </head>
 
 <body>
 
-//Adding the banner to the Page
 <div id = "wrapper">
     <div id = "banner">
     </div>
 
-    //Adding the navigation to the Page, with the hrefs to the other Pages
     <nav id = "navigation">
         <ul id = "nav">
             <li><a href= "RequestPage.php">Requests</a></li>
@@ -38,11 +35,9 @@ include "DBConnect.php";
     </nav>
 
     <pos>
-        //Here is the content, which shows all the MatchedOder on the Page
         <div id = "content_area">
 
         <br>
-        //Creating the Taxi Table
         <table class = 'overviewTable'
         <table border=1 cellspacing=1 cellpadding=2 align="center">
         <thead></thead>
@@ -89,13 +84,11 @@ include "DBConnect.php";
             </tbody>
         </table>
         <br>
-            //Adding a link to the CreateNewTaxiPage.php
         <a href="CreateNewTaxi.php"> Add a new Taxi</a><br/>
     </div>
     </pos>
 
     </div>
-//Adding the footer
     <footer>
         <p> Welcome to our Unter Taxi Company </p>
     </footer>
